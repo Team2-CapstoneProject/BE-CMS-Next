@@ -2,11 +2,11 @@
   "functions": {
     "app/api/hello/route.js": {
       "memory": 3008,
-      "maxDuration": 60
+      "maxDuration": 10
     },
     "app/api/another/route.js": {
       "memory": 1024,
-      "maxDuration": 30
+      "maxDuration": 10
     }
   }
 }
