@@ -8,6 +8,13 @@ export async function POST(request) {
     let email = formData.get("email");
     let password = formData.get("password");
 
+    if ( email === 'admin' ) {
+      return NextResponse.json(
+        { message: "User: Admin cannot sign up" },
+        { status: 400 }
+      );
+    }
+
     if (!email || !password) {
       return NextResponse.json(
         {

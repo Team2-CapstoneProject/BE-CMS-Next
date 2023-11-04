@@ -12,7 +12,7 @@ export function middleware(request) {
     return NextResponse.next();
   } else {
     return NextResponse.json(
-      { success: false, message: 'authentication failed' },
+      { success: false, message: 'Authentication failed. You must login first.' },
       { status: 401 }
     )
   }

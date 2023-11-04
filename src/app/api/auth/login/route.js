@@ -26,6 +26,14 @@ export async function POST(request) {
       }
     } else {
       console.log("--- user.");
+
+      if ( email === 'admin' ) {
+        return NextResponse.json(
+          { message: "User: User cannot login as admin" },
+          { status: 400 }
+        );
+      }
+
       const user = await prisma.users.findMany({
         where: { email },
       });
