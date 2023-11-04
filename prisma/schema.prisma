@@ -11,6 +11,132 @@ datasource db {
   directUrl = env("POSTGRES_PRISMA_URL_NON_POOLING") 
 }
 
+model Bookmarks {
+  id        Int      @id @default(autoincrement())
+  vila_id   Int?
+  user_id   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Vilas     Vilas?   @relation(fields: [vila_id], references: [id])
+  Users     Users?   @relation(fields: [user_id], references: [id])
+}
+
+model Facilities {
+  id              Int      @id @default(autoincrement())
+  label           String   @db.VarChar(255)
+  icon            String   @db.VarChar(255)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  VilaFacilities  VilaFacilities[]
+}
+
+model Reviews {
+  id             Int          @id @default(autoincrement())
+  transaction_id Int
+  user_id        Int
+  score          Int?
+  description    String?      @db.VarChar(255)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  Transactions   Transactions @relation(fields: [transaction_id], references: [id])
+  Users          Users        @relation(fields: [user_id], references: [id])
+}
+
+model Statuses {
+  id                  Int      @id @default(autoincrement())
+  label               Int?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  TransactionStatuses TransactionStatuses[]
+}
+
+model TransactionStatuses {
+  id             Int          @id @default(autoincrement())
+  transaction_id Int
+  status_id      Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  Transactions   Transactions @relation(fields: [transaction_id], references: [id])
+  Statuses       Statuses     @relation(fields: [status_id], references: [id])
+}
+
+model Transactions {
+  id                  Int       @id @default(autoincrement())
+  user_id             Int
+  vila_id             Int
+  n_guest             Int?
+  price               Int?
+  taxes               Int?
+  tgl_checkin         DateTime  @db.Timestamptz(6)
+  tgl_checkout        DateTime  @db.Timestamptz(6)
+  full_name           String?   @db.VarChar(255)
+  phone_number        String?   @db.VarChar(255)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  Users               Users     @relation(fields: [user_id], references: [id])
+  Vilas               Vilas     @relation(fields: [vila_id], references: [id])
+  Reviews             Reviews[]
+  TransactionStatuses TransactionStatuses[]
+}
+
+model Users {
+  id           Int      @id @default(autoincrement())
+  google_id    String?  @db.VarChar(255)
+  image        String?  @db.VarChar(255)
+  email        String   @db.VarChar(255)
+  fullname     String?  @db.VarChar(255)
+  nickname     String?  @db.VarChar(255)
+  password     String   @db.VarChar(255)
+  phone_number String?  @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  Bookmarks    Bookmarks[]
+  Reviews      Reviews[]
+  Transactions Transactions[]
+}
+
+model VilaFacilities {
+  id          Int         @id @default(autoincrement())
+  vila_id     Int
+  facility_id Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  Vilas       Vilas       @relation(fields: [vila_id], references: [id])
+  Facilities  Facilities  @relation(fields: [facility_id], references: [id])
+}
+
+model VilaImages {
+  id           Int      @id @default(autoincrement())
+  vila_id      Int
+  slider_image String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  Vilas        Vilas    @relation(fields: [vila_id], references: [id])
+}
+
+model Vilas {
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(255)
+  price           Int
+  description     String
+  location        String   @db.VarChar(255)
+  latitude        Float?
+  longitude       Float?
+  status          Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  Bookmarks       Bookmarks[]
+  Transactions    Transactions[]
+  VilaFacilities  VilaFacilities[]
+  VilaImages      VilaImages[]
+}
+
+enum enum_Vilas_status {
+  booked
+  ongoing
+  finished
+}
+
 model Product {
     id          Int       @id @default(autoincrement())
     name        String
