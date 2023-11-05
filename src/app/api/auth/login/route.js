@@ -4,10 +4,24 @@ import { verifyPassword, tokenSign } from "@/lib/authHelper";
 
 export async function POST(request) {
   try {
-    const formData = await request.formData();
-    let loginType = formData.get("loginType");
-    let email = formData.get("email");
-    let password = formData.get("password");
+    const requestHeaders = new Headers(request.headers);
+    console.log("header:", requestHeaders);
+    let loginType, email, password;
+
+    if ( requestHeaders.get('content-type') === 'application/json' ) {
+      const jsonData = await request.json();
+      loginType = jsonData.loginType;
+      email = jsonData.email;
+      password = jsonData.password;
+
+    } else if ( requestHeaders.get('content-type') === 'application/x-www-form-urlencoded' ) {
+      const formData = await request.formData();
+      loginType = formData.get("loginType");
+      email = formData.get("email");
+      password = formData.get("password");
+    }
+
+    
 
     if (loginType === "admin") {
       console.log("--- admin.");
