@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import cors from './lib/cors';
+// import cors from './lib/cors';
  
 // Limit the middleware to paths starting with `/api/`
 export const config = {
@@ -10,9 +10,28 @@ export function middleware(request) {
   const requestHeaders = new Headers(request.headers);
 
   if (request.url.includes('/auth/login')) {
-    const res = NextResponse.next();
+    // const res = NextResponse.next();
     console.log('masuk login');
-    cors(request, res);
+    // cors(request, res);
+    requestHeaders.set("Access-Control-Allow-Credentials", true);
+    requestHeaders.set("Access-Control-Allow-Origin", "*");
+    requestHeaders.set(
+      "Access-Control-Allow-Methods",
+      "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    );
+    requestHeaders.set(
+      "Access-Control-Allow-Headers",
+      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    );
+    if (request.method === "OPTIONS") {
+      console.log('masuk options');
+      requestHeaders.status(200).end();
+      return NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        }
+      });
+    }
   } else {
     if (requestHeaders.get('authorization') !== null) {
       const res = NextResponse.next();
