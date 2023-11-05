@@ -28,9 +28,9 @@ export function middleware(request) {
       // requestHeaders.status(200).end();
       return NextResponse.next({
         request: {
-          headers: requestHeaders,
-          status: 200
-        }
+          headers: requestHeaders
+        },
+        status: 200
       });
     }
   } else {
