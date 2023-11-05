@@ -8,14 +8,14 @@ export async function POST(request) {
     console.log("header:", requestHeaders);
     let loginType, email, password;
 
-    if ( requestHeaders.get('content-type') === 'application/json' ) {
+    if ( requestHeaders.get('content-type').includes('json') ) {
       const jsonData = await request.json();
       console.log('=== json data: ', jsonData);
       loginType = jsonData.loginType;
       email = jsonData.email;
       password = jsonData.password;
 
-    } else if ( requestHeaders.get('content-type') === 'application/x-www-form-urlencoded' ) {
+    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
       const formData = await request.formData();
       console.log('=== form data: ', formData);
       loginType = formData.get("loginType");
