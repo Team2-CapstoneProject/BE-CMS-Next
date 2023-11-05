@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import cors from './lib/cors';
  
 // Limit the middleware to paths starting with `/api/`
 export const config = {
@@ -10,15 +11,7 @@ export function middleware(request) {
 
   if (requestHeaders.get('authorization') !== null) {
     const res = NextResponse.next();
-    res.headers.append('Access-Control-Allow-Credentials', "true")
-    res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
-    res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
-    res.headers.append(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    )
-    res.status(200).end();
-    // return res;
+    return cors(request, res);
   } else {
     return NextResponse.json(
       { success: false, message: 'Authentication failed. You must login first.' },
