@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-// import cors from './lib/cors';
+import cors from './lib/cors';
  
 // Limit the middleware to paths starting with `/api/`
 export const config = {
