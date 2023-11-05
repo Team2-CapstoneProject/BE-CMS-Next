@@ -1,28 +1,35 @@
 import { NextResponse } from 'next/server';
+import cors from './lib/cors';
  
 // Limit the middleware to paths starting with `/api/`
 export const config = {
-  matcher: ['/api/auth/registeruserprof/:function*', '/api/mobile/:function*', '/api/dashboard/:function*'],
+  matcher: ['/api/auth/login/:function*', '/api/auth/registeruserprof/:function*', '/api/mobile/:function*', '/api/dashboard/:function*'],
 }
  
 export function middleware(request) {
   const requestHeaders = new Headers(request.headers);
 
-  if (requestHeaders.get('authorization') !== null) {
+  if (request.url.includes('/auth/login')) {
     const res = NextResponse.next();
-    res.headers.append('Access-Control-Allow-Credentials', "true")
-    res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
-    res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
-    res.headers.append(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    )
-    
+    console.log('masuk login');
+    cors(request, res);
   } else {
-    return NextResponse.json(
-      { success: false, message: 'Authentication failed. You must login first.' },
-      { status: 401 }
-    )
+    if (requestHeaders.get('authorization') !== null) {
+      const res = NextResponse.next();
+      res.headers.append('Access-Control-Allow-Credentials', "true")
+      res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
+      res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
+      res.headers.append(
+          'Access-Control-Allow-Headers',
+          'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+      )
+      
+    } else {
+      return NextResponse.json(
+        { success: false, message: 'Authentication failed. You must login first.' },
+        { status: 401 }
+      )
+    }
   }
 }
 

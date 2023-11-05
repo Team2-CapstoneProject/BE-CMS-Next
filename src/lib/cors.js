@@ -13,6 +13,7 @@ const allowCors = (fn) => async (req, res) => {
     "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
   if (req.method === "OPTIONS") {
+    console.log('masuk options');
     res.status(200).end();
     return;
   }
