@@ -8,11 +8,26 @@ export async function POST(request) {
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
 
-  const formData = await request.formData();
-  let fullname = formData.get("fullname");
-  let nickname = formData.get("nickname");
-  let image = formData.get("image");
-  let phone_number = formData.get("phone_number");
+  let fullname, nickname, image, phone_number;
+
+    if ( requestHeaders.get('content-type').includes('json') ) {
+      const jsonData = await request.json();
+      console.log('=== json data: ', jsonData);
+      fullname = jsonData.fullname;
+      nickname = jsonData.nickname;
+      image = jsonData.image;
+      phone_number = jsonData.phone_number;
+
+    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
+      const formData = await request.formData();
+      console.log('=== form data: ', formData);
+      fullname = formData.get("fullname");
+      nickname = formData.get("nickname");
+      image = formData.get("image");
+      phone_number = formData.get("phone_number");
+    }
+
+  
 
   try {
     const user = await prisma.users.findMany({
