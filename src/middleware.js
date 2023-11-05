@@ -9,7 +9,15 @@ export function middleware(request) {
   const requestHeaders = new Headers(request.headers);
 
   if (requestHeaders.get('authorization') !== null) {
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.append('Access-Control-Allow-Credentials', "true")
+    res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
+    res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
+    res.headers.append(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    )
+    
   } else {
     return NextResponse.json(
       { success: false, message: 'Authentication failed. You must login first.' },
