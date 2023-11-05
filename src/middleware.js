@@ -12,27 +12,27 @@ export function middleware(request) {
   if (request.url.includes('/auth/login')) {
     // const res = NextResponse.next();
     console.log('masuk login');
-    // cors(request, res);
-    requestHeaders.set("Access-Control-Allow-Credentials", true);
-    requestHeaders.set("Access-Control-Allow-Origin", "*");
-    requestHeaders.set(
-      "Access-Control-Allow-Methods",
-      "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-    );
-    requestHeaders.set(
-      "Access-Control-Allow-Headers",
-      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-    );
-    if (request.method === "OPTIONS") {
-      console.log('masuk options');
-      // requestHeaders.status(200).end();
-      return NextResponse.next({
-        request: {
-          headers: requestHeaders
-        },
-        status: 200
-      });
-    }
+    return cors(request, new NextResponse());
+    // requestHeaders.set("Access-Control-Allow-Credentials", true);
+    // requestHeaders.set("Access-Control-Allow-Origin", "*");
+    // requestHeaders.set(
+    //   "Access-Control-Allow-Methods",
+    //   "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    // );
+    // requestHeaders.set(
+    //   "Access-Control-Allow-Headers",
+    //   "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    // );
+    // if (request.method === "OPTIONS") {
+    //   console.log('masuk options');
+    //   // requestHeaders.status(200).end();
+    //   return NextResponse.next({
+    //     request: {
+    //       headers: requestHeaders
+    //     },
+    //     status: 200
+    //   });
+    // }
   } else {
     if (requestHeaders.get('authorization') !== null) {
       const res = NextResponse.next();
