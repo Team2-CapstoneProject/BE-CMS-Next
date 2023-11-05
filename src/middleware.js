@@ -17,7 +17,11 @@ export function middleware(request) {
         'Access-Control-Allow-Headers',
         'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     )
-    
+    if (request.method === 'OPTIONS') {
+      res.status(200).end()
+      return res;
+    }
+    return res;
   } else {
     return NextResponse.json(
       { success: false, message: 'Authentication failed. You must login first.' },
