@@ -25,10 +25,11 @@ export function middleware(request) {
     );
     if (request.method === "OPTIONS") {
       console.log('masuk options');
-      requestHeaders.status(200).end();
+      // requestHeaders.status(200).end();
       return NextResponse.next({
         request: {
           headers: requestHeaders,
+          status: 200
         }
       });
     }
