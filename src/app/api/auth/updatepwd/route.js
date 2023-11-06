@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { verifyPassword } from "@/lib/authHelper";
+import { verifyPassword, passwordHash } from "@/lib/authHelper";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -43,9 +43,11 @@ export async function POST(request) {
         }, { status: 404 });
       }
 
+      // console.log('--- check before hash.');
+
       let newPassword = await passwordHash(newpassword);
 
-      console.log('--- new password: ', newPassword);
+      // console.log('--- new password: ', newPassword);
 
       const updatedUser = await prisma.users.update({
         where: { email },
