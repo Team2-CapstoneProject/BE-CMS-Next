@@ -49,7 +49,7 @@ export async function POST(request) {
 
       console.log('--- new password: ', newPassword);
 
-      const updatedUser = await prisma.users.update({
+      const updatedUser = await prisma.users.updateMany({
         where: { email },
         data: {
           password: newPassword,
