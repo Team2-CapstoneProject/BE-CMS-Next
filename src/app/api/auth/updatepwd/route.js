@@ -4,12 +4,24 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   console.log("--- Edit my password.");
-  const formData = await request.formData();
-  let email = formData.get("email");
-  let oldpassword = formData.get("oldpassword");
-  let newpassword = formData.get("newpassword");
-
   try {
+    let email, oldpassword, newpassword;
+
+    if ( requestHeaders.get('content-type').includes('json') ) {
+      const jsonData = await request.json();
+      console.log('=== json data: ', jsonData);
+      email = jsonData.email;
+      oldpassword = jsonData.oldpassword;
+      newpassword = jsonData.newpassword;
+
+    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
+      const formData = await request.formData();
+      console.log('=== form data: ', formData);
+      email = formData.get("email");
+      oldpassword = formData.get("oldpassword");
+      newpassword = formData.get("newpassword");
+    }
+
     const user = await prisma.users.findMany({
       where: { email },
     });

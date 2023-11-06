@@ -10,6 +10,7 @@ export async function POST(request) {
 
   let fullname, nickname, image, phone_number;
 
+  try {
     if ( requestHeaders.get('content-type').includes('json') ) {
       const jsonData = await request.json();
       console.log('=== json data: ', jsonData);
@@ -27,9 +28,6 @@ export async function POST(request) {
       phone_number = formData.get("phone_number");
     }
 
-  
-
-  try {
     const user = await prisma.users.findMany({
       where: { id: Number(userData.id) },
     });

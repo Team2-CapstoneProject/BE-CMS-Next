@@ -23,8 +23,6 @@ export async function POST(request) {
       password = formData.get("password");
     }
 
-    
-
     if (loginType === "admin") {
       console.log("--- admin.");
       if (email === "admin" && password === "admin") {

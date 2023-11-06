@@ -8,13 +8,26 @@ export async function POST(request) {
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
 
-  const formData = await request.formData();
-  let fullname = formData.get("fullname");
-  let nickname = formData.get("nickname");
-  let email = formData.get("email");
-  let phone_number = formData.get("phone_number");
-
   try {
+    let fullname, nickname, email, phone_number;
+
+    if ( requestHeaders.get('content-type').includes('json') ) {
+      const jsonData = await request.json();
+      console.log('=== json data: ', jsonData);
+      fullname = jsonData.fullname;
+      nickname = jsonData.nickname;
+      email = jsonData.email;
+      phone_number = jsonData.phone_number;
+
+    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
+      const formData = await request.formData();
+      console.log('=== form data: ', formData);
+      fullname = formData.get("fullname");
+      nickname = formData.get("nickname");
+      email = formData.get("email");
+      phone_number = formData.get("phone_number");
+    }
+
     const user = await prisma.users.findUnique({
       where: { id: Number(userData.id) },
     });

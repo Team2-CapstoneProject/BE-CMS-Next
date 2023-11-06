@@ -4,9 +4,20 @@ import { passwordHash, tokenSign } from "@/lib/authHelper";
 
 export async function POST(request) {
   try {
-    const formData = await request.formData();
-    let email = formData.get("email");
-    let password = formData.get("password");
+    let email, password;
+
+    if ( requestHeaders.get('content-type').includes('json') ) {
+      const jsonData = await request.json();
+      console.log('=== json data: ', jsonData);
+      email = jsonData.email;
+      password = jsonData.password;
+
+    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
+      const formData = await request.formData();
+      console.log('=== form data: ', formData);
+      email = formData.get("email");
+      password = formData.get("password");
+    }
 
     if ( email === 'admin' ) {
       return NextResponse.json(
