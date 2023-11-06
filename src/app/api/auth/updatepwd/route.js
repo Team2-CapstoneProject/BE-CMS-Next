@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   console.log("--- Edit my password.");
+  const requestHeaders = new Headers(request.headers);
+  
   try {
     let email, oldpassword, newpassword;
 
