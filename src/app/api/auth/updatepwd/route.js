@@ -43,11 +43,11 @@ export async function POST(request) {
         }, { status: 404 });
       }
 
-      // console.log('--- check before hash.');
+      console.log('--- check before hash.');
 
       let newPassword = await passwordHash(newpassword);
 
-      // console.log('--- new password: ', newPassword);
+      console.log('--- new password: ', newPassword);
 
       const updatedUser = await prisma.users.update({
         where: { email },
