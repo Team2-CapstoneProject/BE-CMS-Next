@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { passwordHash, tokenSign } from "@/lib/authHelper";
 
 export async function POST(request) {
+  const requestHeaders = new Headers(request.headers);
+  
   try {
     let email, password;
 
