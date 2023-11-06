@@ -70,7 +70,7 @@ export async function POST(request) {
         phone_number,
       },
     });
-    // console.log("--- newUser: ", newUser);
+    console.log("--- newUser: ", newUser);
 
     const token = tokenSign({
       id: newUser.id,
