@@ -69,6 +69,43 @@ export async function GET(request) {
     }
     nAvailVila = nVila - notAvailVila;
 
+    // new user register
+    let users = await prisma.users.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      },
+      select: {
+        image: true,
+        email: true,
+        fullname: true,
+        nickname: true
+      },
+      take: 8
+    })
+
+    let rateReview = await prisma.reviews.findMany({
+      select: {
+        score: true,
+        description: true,
+        createdAt: true,
+        Users: {
+          select: {
+            fullname: true,
+            image: true,
+          }
+        },
+        Transactions: {
+          select: {
+            Vilas: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
+      }
+    });
+
     return NextResponse.json(
       {
         message: "Main Dashboard",
@@ -78,6 +115,8 @@ export async function GET(request) {
         nVila,
         nAvailVila,
         notAvailVila,
+        users,
+        rateReview
       },
       { status: 200 }
     );
