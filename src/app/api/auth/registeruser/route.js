@@ -61,7 +61,7 @@ export async function POST(request) {
 
     let newUser = await prisma.users.create({
       data: {
-        google_id: 0,
+        google_id: '0',
         image,
         email,
         fullname,
