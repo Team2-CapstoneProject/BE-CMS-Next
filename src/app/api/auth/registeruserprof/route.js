@@ -5,6 +5,7 @@ import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { createEdgeRouter } from "next-connect";
 import { promises as fs } from "fs";
+import { open } from 'node:fs/promises';
 import path from "path";
 import process from "process";
 import { authenticate } from "@google-cloud/local-auth";
@@ -146,6 +147,7 @@ async function authorize() {
 
 async function uploadFile(authClient, fileName, buffer) {
   const drive = google.drive({ version: 'v3', auth: authClient });
+  const fd = await open(buffer);
 
   if (fileName) {
     const file = await drive.files.create({
@@ -154,7 +156,7 @@ async function uploadFile(authClient, fileName, buffer) {
       },
       fields: 'id',
       media: {
-        body: fs.createReadStream(buffer)
+        body: fd.createReadStream()
       },
     });
     console.log('--- File Id:', file.data.id)
