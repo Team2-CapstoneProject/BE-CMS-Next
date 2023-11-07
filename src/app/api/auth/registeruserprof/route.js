@@ -81,6 +81,7 @@ router.use(upload.array("image")).post( async (request) => {
       return NextResponse.json(
         {
           message: "Profile updated",
+          filename: request.file.filename
         },
         { status: 201 }
       );
