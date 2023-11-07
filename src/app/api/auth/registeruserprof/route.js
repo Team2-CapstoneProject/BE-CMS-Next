@@ -8,6 +8,8 @@ export async function POST(request) {
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
 
+  console.log('--- header:', requestHeaders);
+
   let fullname, nickname, image, phone_number;
 
   try {
@@ -49,6 +51,8 @@ export async function POST(request) {
       where: { id: Number(userData.id) },
       data: { fullname, nickname, image, phone_number },
     });
+
+    console.log('--- new user: ', newUser);
 
     if (newUser) {
       return NextResponse.json(
