@@ -147,7 +147,7 @@ async function authorize() {
 
 async function uploadFile(authClient, fileName, buffer) {
   const drive = google.drive({ version: 'v3', auth: authClient });
-  const fd = await open(buffer);
+  // const fd = await open(buffer);
 
   if (fileName) {
     const file = await drive.files.create({
@@ -156,7 +156,7 @@ async function uploadFile(authClient, fileName, buffer) {
       },
       fields: 'id',
       media: {
-        body: fd.createReadStream()
+        body: fs.createReadStream(fileName)
       },
     });
     console.log('--- File Id:', file.data.id)
