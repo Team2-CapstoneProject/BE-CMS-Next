@@ -8,7 +8,9 @@ import { createEdgeRouter } from "next-connect";
 let filename = uuidv4() + "-" + new Date().getTime();
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "/uploads/profiles",
+    destination: function (req, file, cb) {
+      cb(null, "public");
+    },
     filename: (req, file, cb) =>
       cb(
         null,
