@@ -28,8 +28,6 @@ const upload = multer({
 const router = createEdgeRouter();
 
 router.use(upload.single("image")).post( async (request) => {
-  const content = Date.now().toString();
-  writeFileSync(`public/images/new.txt`, content);
 
   console.log("--- Edit my profile.");
   console.log("=== request: ", request);
@@ -67,6 +65,12 @@ router.use(upload.single("image")).post( async (request) => {
       nickname = formData.get("nickname");
       image = formData.get("image");
       phone_number = formData.get("phone_number");
+
+      const buffer = Buffer.from(await image.arrayBuffer());
+      // const filename = Date.now() + file.name.replaceAll(" ", "_");
+  console.log('--- filename', filename);
+
+  writeFileSync(path.join(process.cwd(), "public/uploads/" + filename), buffer);
     }
 
     console.log('--- request file: ', request.file);
