@@ -26,8 +26,9 @@ const upload = multer({
 
 const router = createEdgeRouter();
 
-router.use(upload.array("image")).post( async (request) => {
+router.use(upload.single("image")).post( async (request) => {
   console.log("--- Edit my profile.");
+  console.log("=== request: ", request);
   const requestHeaders = new Headers(request.headers);
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
@@ -54,6 +55,8 @@ router.use(upload.array("image")).post( async (request) => {
       image = formData.get("image");
       phone_number = formData.get("phone_number");
     }
+
+    console.log('--- request file: ', request.file);
 
     const user = await prisma.users.findMany({
       where: { id: Number(userData.id) },
