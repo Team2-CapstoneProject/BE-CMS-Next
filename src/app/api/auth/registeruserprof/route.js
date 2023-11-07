@@ -204,7 +204,8 @@ export async function POST(request) {
 
       console.log('--- image:', image);
 
-      const buffer = Buffer.from(await image.arrayBuffer(), 'base64');
+      let buffer = Buffer.from(await image.arrayBuffer(), 'base64');
+      buffer = buffer.filter((value) => value !== 0);
       const filename = Date.now() + image.name.replaceAll(" ", "_");
       console.log("--- filename", filename);
 
