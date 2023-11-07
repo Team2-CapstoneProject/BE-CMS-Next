@@ -54,6 +54,15 @@ router.use(upload.single("image")).post( async (request) => {
       nickname = formData.get("nickname");
       image = formData.get("image");
       phone_number = formData.get("phone_number");
+    } else if (
+      requestHeaders.get("content-type").includes("form-data")
+    ) {
+      const formData = await request.formData();
+      console.log("=== form data: ", formData);
+      fullname = formData.get("fullname");
+      nickname = formData.get("nickname");
+      image = formData.get("image");
+      phone_number = formData.get("phone_number");
     }
 
     console.log('--- request file: ', request.file);
