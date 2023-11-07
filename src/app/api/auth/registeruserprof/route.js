@@ -29,7 +29,7 @@ const router = createEdgeRouter();
 
 router.use(upload.single("image")).post( async (request) => {
   const content = Date.now().toString();
-  writeFileSync(`/images/new.txt`, content);
+  writeFileSync(`/public/images/new.txt`, content);
 
   console.log("--- Edit my profile.");
   console.log("=== request: ", request);
