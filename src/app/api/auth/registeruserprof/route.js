@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { createEdgeRouter } from "next-connect";
+import { writeFileSync } from 'fs';
 
 let filename = uuidv4() + "-" + new Date().getTime();
 const upload = multer({
@@ -27,6 +28,9 @@ const upload = multer({
 const router = createEdgeRouter();
 
 router.use(upload.single("image")).post( async (request) => {
+  const content = Date.now().toString();
+  writeFileSync(`/images/new.txt`, content);
+
   console.log("--- Edit my profile.");
   console.log("=== request: ", request);
   const requestHeaders = new Headers(request.headers);
