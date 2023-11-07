@@ -147,7 +147,7 @@ async function authorize() {
 
 async function uploadFile(authClient, fileName, buffer) {
   const drive = google.drive({ version: 'v3', auth: authClient });
-  // const fd = await open(buffer);
+  const fd = await open(buffer);
 
   if (fileName) {
     const file = await drive.files.create({
@@ -156,7 +156,7 @@ async function uploadFile(authClient, fileName, buffer) {
       },
       fields: 'id',
       media: {
-        body: fs.createReadStream(fileName)
+        body: fd.createReadStream()
       },
     });
     console.log('--- File Id:', file.data.id)
@@ -202,11 +202,13 @@ export async function POST(request) {
       image = formData.get("image");
       phone_number = formData.get("phone_number");
 
+      console.log('--- image:', image);
+
       const buffer = Buffer.from(await image.arrayBuffer());
       const filename = Date.now() + image.name.replaceAll(" ", "_");
       console.log("--- filename", filename);
 
-      await uploadFile(await authorize(), filename, buffer);
+      await uploadFile(await authorize(), filename, image.name);
 
       // authorize().then(uploadFile).catch(console.error);
 
