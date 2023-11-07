@@ -204,11 +204,11 @@ export async function POST(request) {
 
       console.log('--- image:', image);
 
-      const buffer = Buffer.from(await image.arrayBuffer());
+      const buffer = Buffer.from(await image.arrayBuffer(), 'base64');
       const filename = Date.now() + image.name.replaceAll(" ", "_");
       console.log("--- filename", filename);
 
-      await uploadFile(await authorize(), filename, image);
+      await uploadFile(await authorize(), filename, buffer);
 
       // authorize().then(uploadFile).catch(console.error);
 
