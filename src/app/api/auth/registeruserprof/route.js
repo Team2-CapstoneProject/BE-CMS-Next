@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { createEdgeRouter } from "next-connect";
-import { writeFileSync } from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
 
 // let filename = uuidv4() + "-" + new Date().getTime();
@@ -167,9 +167,9 @@ export async function POST(request) {
 
       const buffer = Buffer.from(await image.arrayBuffer());
       const filename = Date.now() + image.name.replaceAll(" ", "_");
-  console.log('--- filename', filename);
+      console.log('--- filename', filename);
 
-  writeFileSync(path.join(process.cwd(), "public/uploads/" + filename), buffer);
+      await fs.writeFile(path.join(process.cwd(), "public/uploads/" + filename), buffer);
     }
 
     // console.log('--- request file: ', request.file);
