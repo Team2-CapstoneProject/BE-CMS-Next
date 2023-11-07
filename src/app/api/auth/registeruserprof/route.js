@@ -4,8 +4,12 @@ import { NextResponse } from "next/server";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { createEdgeRouter } from "next-connect";
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from "fs";
+import path from "path";
+import process from "process";
+import { authenticate } from "@google-cloud/local-auth";
+import { google } from "googleapis";
+import pkey from "../../../../../second-network-403402-9612f42f626d.json";
 
 // let filename = uuidv4() + "-" + new Date().getTime();
 // const upload = multer({
@@ -127,6 +131,39 @@ import path from 'path';
 //   }
 // });
 
+const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
+
+async function authorize() {
+  const jwtClient = new google.auth.JWT(
+    pkey.client_email,
+    null,
+    pkey.private_key,
+    SCOPES
+  );
+  await jwtClient.authorize();
+  return jwtClient;
+}
+
+async function uploadFile(authClient, fileName, buffer) {
+  const drive = google.drive({ version: 'v3', auth: authClient });
+
+  if (fileName) {
+    const file = await drive.files.create({
+      requestBody: {
+        name: fileName,
+      },
+      fields: 'id',
+      media: {
+        body: fs.createReadStream(buffer)
+      },
+    });
+    console.log('--- File Id:', file.data.id)
+  }
+  else
+    console.log("Please specify a file name")
+
+}
+
 export async function POST(request) {
   console.log("--- Edit my profile.");
   console.log("=== request: ", request);
@@ -155,9 +192,7 @@ export async function POST(request) {
       nickname = formData.get("nickname");
       image = formData.get("image");
       phone_number = formData.get("phone_number");
-    } else if (
-      requestHeaders.get("content-type").includes("form-data")
-    ) {
+    } else if (requestHeaders.get("content-type").includes("form-data")) {
       const formData = await request.formData();
       console.log("=== form data: ", formData);
       fullname = formData.get("fullname");
@@ -167,10 +202,19 @@ export async function POST(request) {
 
       const buffer = Buffer.from(await image.arrayBuffer());
       const filename = Date.now() + image.name.replaceAll(" ", "_");
-      console.log('--- filename', filename);
+      console.log("--- filename", filename);
 
-      await fs.writeFile(path.join(process.cwd(), "public/uploads/" + filename), buffer);
+      await uploadFile(await authorize(), filename, buffer);
+
+      // authorize().then(uploadFile).catch(console.error);
+
+      // await fs.writeFile(
+      //   path.join(process.cwd(), "public/uploads/" + filename),
+      //   buffer
+      // );
     }
+    // https://blog.devops.dev/upload-files-to-google-drive-with-nodejs-d0c24d4b4dc0
+    // https://developers.google.com/drive/api/quickstart/nodejs
 
     // console.log('--- request file: ', request.file);
 
@@ -202,7 +246,7 @@ export async function POST(request) {
       return NextResponse.json(
         {
           message: "Profile updated",
-          filename: request.file.filename
+          filename: request.file.filename,
         },
         { status: 201 }
       );

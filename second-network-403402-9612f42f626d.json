@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "second-network-403402",
+  "private_key_id": "9612f42f626d79a9c217144a924bebb09d28e5b9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCayv8T9FWyQewr\n04dT4zQERiS/ja0O2KYerFq3IeXYBASGZRSRU5YSAXoE72g7Fw/hHjBhLYmvt76K\nAEXVTWib8k9MgCEW+tZnISRoYeCexLp+iLMAzr1ayGBlatTbAvK6kiPSdKtwiAS/\neMTmjQbMBl9U2EnhRZA6C8KXHJ3rulS8T9BkKVRXFU53yyLcloJ50nar4tkrz27U\nmXVxpjsFGivE78w99Pj8TpGcaeCiLDiqNLFv82MxcBzUnw6HZxlg9PYwS7xyf0h4\nlj76+8ZTpUQY9s3qAO4LXK1U/Oo2qx3XKGVGXbipSJJtOVwQbw41USY4rkIAOohm\nM6V24NlpAgMBAAECggEAD3vJuxnALrYIZTPiAAKkk97eUyjdTDRgnYXZByOFZa+1\nMipPPeAyDTgHmBHIh8ydQoPuC/JtqN2E2jH/yj/VfG/m/bx9Utqhcqxug2BzAv6j\ntv9+hFCpwTh06AAhLY0kcYQnwCf6dCWu7+YpL/SgXu0uQQLnlPiL3jqJ6uqqY0dW\n2BJrw3yJP3eBMQS7/xPl2ndaq1O/K8vcZC4EP/Nm/WSBwBnf+mWwDD84zGafsQfe\nJhclg+UM6krOZHacvfWDNQYF6vTtwndX73Z9itNzatj6hr25/3Ot9fFKWy1hKJcE\nyHYz4ZSIUZirxNKNRjHntyDiI9Fet8zbmF3saka6wQKBgQDLYsdL2jGiMKwgleC7\nh5jL3Y/dmsEU7qmMhlKsTN8529R/HJWKxriQpfkAAo24C1aPwCeEjYNbbN0lx1qY\nk+QGKthrd8Yh+GqOQd+fhFuhKbNZia20cjoWjk74ZHjyXYGKj1ISQG6b0AdOhQ1D\nQkEVq9UPJtdnDAYB7RVD0Vc0OQKBgQDC1ieeX/nQph4s3cJ0JetDqyZqzcCbd743\nH5MsLcDRNuGypdQwn8O916RGTjiMztnozbpS+jKcOiEGqWnTH+I8fLAAXP3uYed9\njibgFKp79oTF6860KYLgaCu+uRy5Jx8EVaRxS9vJSyrp6erCsBpo4s95MotUM4ER\n1odDCs+usQKBgQCpmKfpp3vF7GJMFc69cbfHH+1MdDRXeSBm7sdXqA5ol9gdWr+U\nZlsXO19kU7zLYKEA49HQJZUIksHiM9dm7cOyJN4s10afox9vmpyXzu39eOF2Y2k2\n1B1+G5LcbCOyrqhL23EriRDy2siNAEPr9v6AzLWwmcn6wrrrtkAKOjFGeQKBgHMJ\njPTmyBJYssJc4R5A8UrP9+vhthJVPhs/6l6QWSNuGw6m+MUI38LsWtMkBiGlVGYv\nag7qKQ2zCKLtTk1YqvR5zlU4krm4Vrz8PJnbudldcYGGvFIFnH+xIfsHQx1TKu4d\nPu2iE5AjcKAR/Amdfspk+IkfvcImctO8bbq43GzRAoGBAJtWPl88qonxKLFjPhGp\n262GNujQSj+zWCxSaJ4meZbvLdKwh3TV69oEVEzn8VO5hufLE33DYBjZoZ/upijS\nkpqH4wHvmC1e4GUHxR3b13YA/t4nGsL2MeSglFYZXaKNU+8+shz3PcRMPPXI5DgN\n4ksaZRrOZR6WNjDAu00HUq1Q\n-----END PRIVATE KEY-----\n",
+  "client_email": "azuravoyage@second-network-403402.iam.gserviceaccount.com",
+  "client_id": "104072604091132835452",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/azuravoyage%40second-network-403402.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
