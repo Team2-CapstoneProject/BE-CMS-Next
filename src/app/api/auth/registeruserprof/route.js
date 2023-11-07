@@ -208,7 +208,7 @@ export async function POST(request) {
       const filename = Date.now() + image.name.replaceAll(" ", "_");
       console.log("--- filename", filename);
 
-      await uploadFile(await authorize(), filename, image.name);
+      await uploadFile(await authorize(), filename, image);
 
       // authorize().then(uploadFile).catch(console.error);
 
