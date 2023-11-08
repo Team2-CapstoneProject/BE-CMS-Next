@@ -4,13 +4,15 @@ import { NextResponse } from "next/server";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { createEdgeRouter } from "next-connect";
-import { promises as fs } from "fs";
+import fs from "fs";
 import { open } from 'node:fs/promises';
 import path from "path";
 import process from "process";
 import { authenticate } from "@google-cloud/local-auth";
 import { google } from "googleapis";
 import pkey from "../../../../../second-network-403402-9612f42f626d.json";
+import { put, del } from "@vercel/blob";
+import stream from 'stream';
 
 // let filename = uuidv4() + "-" + new Date().getTime();
 // const upload = multer({
@@ -147,19 +149,28 @@ async function authorize() {
 
 async function uploadFile(authClient, fileName, buffer) {
   const drive = google.drive({ version: 'v3', auth: authClient });
-  const fd = await open(buffer);
+  // const fd = await open(new URL(buffer));
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(buffer);
 
   if (fileName) {
     const file = await drive.files.create({
-      requestBody: {
+      resource: {
         name: fileName,
+        parents: ['1wIJaKmh1hrUOsp_fY4I9RDhhWH_OqanR']
       },
-      fields: 'id',
       media: {
-        body: fd.createReadStream()
+        mimeType: 'image/jpeg',
+        // body: fd.createReadStream()
+        body: bufferStream
       },
+      field: 'id',
     });
-    console.log('--- File Id:', file.data.id)
+    console.log('--- File Id:', file.data.id);
+
+    // return "https://drive.google.com/file/d/"+file.data.id+"/view?usp=sharing"
+
+    return file.data.id;
   }
   else
     console.log("Please specify a file name")
@@ -175,7 +186,7 @@ export async function POST(request) {
 
   console.log("--- header:", requestHeaders);
 
-  let fullname, nickname, image, phone_number;
+  let fullname, nickname, image, phone_number, imageUrl, filename;
 
   try {
     if (requestHeaders.get("content-type").includes("json")) {
@@ -183,7 +194,7 @@ export async function POST(request) {
       console.log("=== json data: ", jsonData);
       fullname = jsonData.fullname;
       nickname = jsonData.nickname;
-      image = jsonData.image;
+      imageUrl = jsonData.image;
       phone_number = jsonData.phone_number;
     } else if (
       requestHeaders.get("content-type").includes("x-www-form-urlencoded")
@@ -192,7 +203,7 @@ export async function POST(request) {
       console.log("=== form data: ", formData);
       fullname = formData.get("fullname");
       nickname = formData.get("nickname");
-      image = formData.get("image");
+      imageUrl = formData.get("image");
       phone_number = formData.get("phone_number");
     } else if (requestHeaders.get("content-type").includes("form-data")) {
       const formData = await request.formData();
@@ -204,12 +215,21 @@ export async function POST(request) {
 
       console.log('--- image:', image);
 
-      let buffer = Buffer.from(await image.arrayBuffer(), 'base64');
-      buffer = buffer.filter((value) => value !== 0);
-      const filename = Date.now() + image.name.replaceAll(" ", "_");
+      let buffer = Buffer.from(await image.arrayBuffer());
+      // buffer = buffer.filter((value) => value !== 0);
+      filename = Date.now() + image.name.replaceAll(" ", "_");
       console.log("--- filename", filename);
 
-      await uploadFile(await authorize(), filename, buffer);
+      // let newBuffer = Buffer.from(buffer.filter((value) => value != 0x00));
+
+      // console.log('--- buffer: ', buffer);
+      // console.log('--- buffer: ', newBuffer);
+
+      // const blob = await put(filename, await image.arrayBuffer(), {access: 'public'});
+
+      // console.log('-- blob:', blob);
+
+      imageUrl = await uploadFile(await authorize(), filename, buffer);
 
       // authorize().then(uploadFile).catch(console.error);
 
@@ -233,16 +253,16 @@ export async function POST(request) {
     if (nickname === null || nickname === "") {
       nickname = user.nickname;
     }
-    if (image === null || image === "") {
-      image = user.image;
-    }
+    // if (image === null || image === "") {
+    //   image = user.image;
+    // }
     if (phone_number === null || phone_number === "") {
       phone_number = user.phone_number;
     }
 
     const newUser = await prisma.users.update({
       where: { id: Number(userData.id) },
-      data: { fullname, nickname, image, phone_number },
+      data: { fullname, nickname, image:imageUrl, phone_number },
     });
 
     console.log("--- new user: ", newUser);
@@ -251,7 +271,7 @@ export async function POST(request) {
       return NextResponse.json(
         {
           message: "Profile updated",
-          filename: request.file.filename,
+          filename
         },
         { status: 201 }
       );
