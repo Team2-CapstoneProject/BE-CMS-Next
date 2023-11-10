@@ -52,6 +52,7 @@ export function middleware(request) {
     // }
   } else {
     if (requestHeaders.get('authorization') !== null) {
+      console.log('--- masuk auth non login.');
       const res = NextResponse.next();
       res.headers.append('Access-Control-Allow-Credentials', "true")
       res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
