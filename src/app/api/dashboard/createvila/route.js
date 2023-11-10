@@ -71,9 +71,12 @@ export async function POST(request) {
         longitude,
       },
     });
-    console.log(newVila);
+    console.log('--- new vila:', newVila);
+
+    console.log('--- images:', images);
 
     for (let image of images) {
+      console.log('--- image:', image);
       await prisma.vilaimages.create({
         data: {
           vila_id: newVila.id,
