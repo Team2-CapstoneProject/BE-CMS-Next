@@ -33,10 +33,10 @@ export async function POST(request) {
     const vila = await prisma.vilas.findUnique({
       where: { id: vilaId },
     });
-    const vilaImage = await prisma.vilaimages.findMany({
+    const vilaImage = await prisma.vilaImages.findMany({
       where: { vila_id: vilaId },
     });
-    const vilaFacility = await prisma.vilafacilities.findMany({
+    const vilaFacility = await prisma.vilaFacilities.findMany({
       where: { vila_id: vilaId },
     });
 
@@ -78,11 +78,11 @@ export async function POST(request) {
         .replace("[", "")
         .replace("]", "")
         .split(",");
-      await prisma.vilaimages.deleteMany({
+      await prisma.vilaImages.deleteMany({
         where: { vila_id: vilaId },
       });
       for (let image of images) {
-        await prisma.vilaimages.create({
+        await prisma.vilaImages.create({
           vila_id: vilaId,
           slider_image: image,
         });
@@ -97,11 +97,11 @@ export async function POST(request) {
         .replace("[", "")
         .replace("]", "")
         .split(",");
-      await prisma.vilafacilities.deleteMany({
+      await prisma.vilaFacilities.deleteMany({
         where: { vila_id: vilaId },
       });
       for (let facility of facilities) {
-        await prisma.vilafacilities.create({
+        await prisma.vilaFacilities.create({
           vila_id: vilaId,
           facility_id: Number(facility),
         });

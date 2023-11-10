@@ -22,10 +22,10 @@ export async function POST(request) {
   vilaId = Number(vilaId);
 
   try {
-    await prisma.vilaimages.deleteMany({
+    await prisma.vilaImages.deleteMany({
       where: { vila_id: vilaId }
     });
-    await prisma.vilafacilities.destroyMany({
+    await prisma.vilaFacilities.deleteMany({
       where: { vila_id: vilaId }
     });
     await prisma.vilas.delete({
