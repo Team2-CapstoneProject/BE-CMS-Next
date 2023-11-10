@@ -1,26 +1,25 @@
 import prisma from "@/lib/prisma";
-import { verifyPassword, passwordHash } from "@/lib/authHelper";
+import { passwordHash } from "@/lib/authHelper";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
   console.log("--- Edit my password.");
   const requestHeaders = new Headers(request.headers);
-  
+
   try {
-    let email, oldpassword, newpassword;
+    let email, newpassword;
 
-    if ( requestHeaders.get('content-type').includes('json') ) {
+    if (requestHeaders.get("content-type").includes("json")) {
       const jsonData = await request.json();
-      console.log('=== json data: ', jsonData);
+      console.log("=== json data: ", jsonData);
       email = jsonData.email;
-      oldpassword = jsonData.oldpassword;
       newpassword = jsonData.newpassword;
-
-    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
+    } else if (
+      requestHeaders.get("content-type").includes("x-www-form-urlencoded")
+    ) {
       const formData = await request.formData();
-      console.log('=== form data: ', formData);
+      console.log("=== form data: ", formData);
       email = formData.get("email");
-      oldpassword = formData.get("oldpassword");
       newpassword = formData.get("newpassword");
     }
 
@@ -28,53 +27,51 @@ export async function POST(request) {
       where: { email },
     });
 
-    const checkPass = await verifyPassword(oldpassword, user[0].password);
-    console.log("Check edit password:", checkPass);
-
-    if (checkPass) {
-      if (oldpassword === newpassword) {
-        return NextResponse.json({
-          message: "Old and new password must differ.",
-        }, { status: 404 });
-      }
-      if (newpassword === "" || newpassword === null) {
-        return NextResponse.json({
+    if (newpassword === "" || newpassword === null) {
+      return NextResponse.json(
+        {
           message: "New password cannot null.",
-        }, { status: 404 });
-      }
-
-      console.log('--- check before hash.');
-
-      let newPassword = await passwordHash(newpassword);
-
-      console.log('--- new password: ', newPassword);
-
-      const updatedUser = await prisma.users.updateMany({
-        where: { email },
-        data: {
-          password: newPassword,
         },
-      });
+        { status: 404 }
+      );
+    }
 
-      console.log('--- updated user: ', updatedUser);
+    console.log("--- check before hash.");
 
-      if (updatedUser) {
-        return NextResponse.json({
+    let newPassword = await passwordHash(newpassword);
+
+    console.log("--- new password: ", newPassword);
+
+    const updatedUser = await prisma.users.updateMany({
+      where: { email },
+      data: {
+        password: newPassword,
+      },
+    });
+
+    console.log("--- updated user: ", updatedUser);
+
+    if (updatedUser) {
+      return NextResponse.json(
+        {
           message: "Password updated",
-        }, { status: 201 });
-      } else {
-        return NextResponse.json({
-          message: "Update password failed",
-        }, { status: 404 });
-      }
+        },
+        { status: 201 }
+      );
     } else {
-      return NextResponse.json({
-        message: "Old password is false",
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          message: "Update password failed",
+        },
+        { status: 404 }
+      );
     }
   } catch (error) {
-    return NextResponse.json({
-      message: "All field must filled in",
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "All field must filled in",
+      },
+      { status: 500 }
+    );
   }
 }

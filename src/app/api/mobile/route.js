@@ -6,9 +6,15 @@ export async function GET(request) {
   console.log("=== allVila. ");
   const requestHeaders = new Headers(request.headers);
   const bearerHeader = requestHeaders.get("authorization");
-  const userData = verifyToken(bearerHeader);
+  const oldUserData = verifyToken(bearerHeader);
 
   try {
+    const userData = await prisma.users.findUnique({
+      where: {
+        id: Number(oldUserData.id)
+      }
+    });
+
     let vilas = await prisma.vilas.findMany({
       select: {
         id: true,
