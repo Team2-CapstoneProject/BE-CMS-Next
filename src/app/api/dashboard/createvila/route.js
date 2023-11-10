@@ -79,15 +79,16 @@ export async function POST(request) {
       console.log('--- image:', image);
       await prisma.vilaimages.create({
         data: {
-          vila_id: newVila.id,
+          vila_id: Number(newVila.id),
           slider_image: image,
         },
       });
     }
     for (let facility of facilities) {
+      console.log('--- facility:', facility);
       await prisma.vilafacilities.create({
         data: {
-          vila_id: newVila.id,
+          vila_id: Number(newVila.id),
           facility_id: Number(facility),
         },
       });
