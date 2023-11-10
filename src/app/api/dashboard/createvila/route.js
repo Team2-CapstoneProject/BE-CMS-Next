@@ -29,7 +29,7 @@ export async function POST(request) {
   let images = formData.get("images");
   let facilities = formData.get("facilities");
 
-  console.log('--- images: ', images);
+  console.log('--- before split images: ', images);
 
   try {
     images = images
@@ -38,6 +38,9 @@ export async function POST(request) {
       .replace("]", "")
       .replace('"', "")
       .split(",");
+    
+    console.log('--- after split  images: ', images);
+    
     facilities = facilities
       .replace(" ", "")
       .replace("[", "")
