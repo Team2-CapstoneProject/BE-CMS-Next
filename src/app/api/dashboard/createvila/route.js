@@ -29,16 +29,20 @@ export async function POST(request) {
   let images = formData.get("images");
   let facilities = formData.get("facilities");
 
+  console.log('--- images: ', images);
+
   try {
     images = images
       .replace(" ", "")
       .replace("[", "")
       .replace("]", "")
+      .replace('"', "")
       .split(",");
     facilities = facilities
       .replace(" ", "")
       .replace("[", "")
       .replace("]", "")
+      .replace('"', "")
       .split(",");
 
     if (
@@ -74,8 +78,6 @@ export async function POST(request) {
       },
     });
     console.log('--- new vila:', newVila);
-
-    console.log('--- images:', images);
 
     for (let image of images) {
       await prisma.vilaImages.create({
