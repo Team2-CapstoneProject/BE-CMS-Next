@@ -68,7 +68,7 @@ export async function POST(request) {
         description,
         location,
         latitude,
-        longitude,
+        longitude
       },
     });
     console.log('--- new vila:', newVila);
@@ -76,8 +76,7 @@ export async function POST(request) {
     console.log('--- images:', images);
 
     for (let image of images) {
-      console.log('--- image:', image);
-      await prisma.vilaimages.create({
+      await prisma.vilaImages.create({
         data: {
           vila_id: Number(newVila.id),
           slider_image: image,
@@ -86,7 +85,7 @@ export async function POST(request) {
     }
     for (let facility of facilities) {
       console.log('--- facility:', facility);
-      await prisma.vilafacilities.create({
+      await prisma.vilaFacilities.create({
         data: {
           vila_id: Number(newVila.id),
           facility_id: Number(facility),
@@ -101,6 +100,6 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json(error, { status: 500 });
+    return NextResponse.json({error}, { status: 500 });
   }
 }
