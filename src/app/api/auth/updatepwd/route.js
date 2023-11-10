@@ -27,41 +27,50 @@ export async function POST(request) {
       where: { email },
     });
 
-    if (newpassword === "" || newpassword === null) {
-      return NextResponse.json(
-        {
-          message: "New password cannot null.",
+    if (user) {
+      if (newpassword === "" || newpassword === null) {
+        return NextResponse.json(
+          {
+            message: "New password cannot null.",
+          },
+          { status: 404 }
+        );
+      }
+
+      console.log("--- check before hash.");
+
+      let newPassword = await passwordHash(newpassword);
+
+      console.log("--- new password: ", newPassword);
+
+      const updatedUser = await prisma.users.updateMany({
+        where: { email },
+        data: {
+          password: newPassword,
         },
-        { status: 404 }
-      );
-    }
+      });
 
-    console.log("--- check before hash.");
+      console.log("--- updated user: ", updatedUser);
 
-    let newPassword = await passwordHash(newpassword);
-
-    console.log("--- new password: ", newPassword);
-
-    const updatedUser = await prisma.users.updateMany({
-      where: { email },
-      data: {
-        password: newPassword,
-      },
-    });
-
-    console.log("--- updated user: ", updatedUser);
-
-    if (updatedUser) {
-      return NextResponse.json(
-        {
-          message: "Password updated",
-        },
-        { status: 201 }
-      );
+      if (updatedUser) {
+        return NextResponse.json(
+          {
+            message: "Password updated",
+          },
+          { status: 201 }
+        );
+      } else {
+        return NextResponse.json(
+          {
+            message: "Update password failed",
+          },
+          { status: 404 }
+        );
+      }
     } else {
       return NextResponse.json(
         {
-          message: "Update password failed",
+          message: "Email user is not found. Please create a new one.",
         },
         { status: 404 }
       );
