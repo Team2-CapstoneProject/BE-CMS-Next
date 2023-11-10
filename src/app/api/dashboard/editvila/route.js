@@ -22,12 +22,15 @@ export async function POST(request) {
   vilaId = Number(vilaId);
   let name = formData.get("name");
   let price = formData.get("price");
+  price = Number(price);
   let description = formData.get("description");
   let location = formData.get("location");
   let latitude = formData.get("latitude");
   let longitude = formData.get("longitude");
   let images = formData.get("images");
   let facilities = formData.get("facilities");
+
+  console.log('--- images: ', images);
 
   try {
     const vila = await prisma.vilas.findUnique({
@@ -40,12 +43,14 @@ export async function POST(request) {
       where: { vila_id: vilaId },
     });
 
+    console.log('1');
+
     let i = 0;
     if (name === null || name === "" || name === undefined) {
       name = vila.name;
       i++;
     }
-    if (price === null || price === "" || price === undefined) {
+    if (price === null || price === 0 || price === undefined) {
       price = vila.price;
       i++;
     }
@@ -88,6 +93,7 @@ export async function POST(request) {
         });
       }
     }
+    console.log('2');
     if (facilities === null || facilities === "" || facilities === undefined) {
       facilities = vilaFacility.map((value) => value.facility_id);
       i++;
@@ -115,6 +121,7 @@ export async function POST(request) {
         { status: 404 }
       );
     }
+    console.log('3');
 
     const newVila = await prisma.vilas.update({
       where: { id: vilaId },
@@ -124,11 +131,11 @@ export async function POST(request) {
         description,
         location,
         latitude,
-        longitude,
-        images,
-        facilities,
+        longitude
       },
     });
+
+    console.log('4');
 
     if (newVila) {
       return NextResponse.json(
