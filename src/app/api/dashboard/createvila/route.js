@@ -33,17 +33,19 @@ export async function POST(request) {
 
   try {
     images = images
-      .replace(" ", "")
-      .replace("[", "")
-      .replace("]", "")
+      .replaceAll(" ", "")
+      .replaceAll("[", "")
+      .replaceAll("]", "")
+      .replaceAll('"', "")
       .split(",");
     
     console.log('--- after split  images: ', images);
 
     facilities = facilities
-      .replace(" ", "")
-      .replace("[", "")
-      .replace("]", "")
+      .replaceAll(" ", "")
+      .replaceAll("[", "")
+      .replaceAll("]", "")
+      .replaceAll('"', "")
       .split(",");
 
     if (
@@ -81,8 +83,6 @@ export async function POST(request) {
     console.log('--- new vila:', newVila);
 
     for (let image of images) {
-      image = image.replace('"', "");
-      console.log('-- image: ', image);
       await prisma.vilaImages.create({
         data: {
           vila_id: Number(newVila.id),
@@ -91,8 +91,6 @@ export async function POST(request) {
       });
     }
     for (let facility of facilities) {
-      facility = facility.replace('"', "");
-      console.log('--- facility:', facility);
       await prisma.vilaFacilities.create({
         data: {
           vila_id: Number(newVila.id),
