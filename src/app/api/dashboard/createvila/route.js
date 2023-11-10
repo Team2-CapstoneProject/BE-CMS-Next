@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   console.log("--- create vila.");
   const requestHeaders = new Headers(request.headers);
+  console.log("--- header: ", requestHeaders);
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
 
@@ -18,6 +19,7 @@ export async function POST(request) {
   }
 
   const formData = await request.formData();
+  console.log('--- input data: ', formData);
   let name = formData.get("name");
   let price = formData.get("price");
   let description = formData.get("description");
