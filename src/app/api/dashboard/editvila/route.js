@@ -36,6 +36,16 @@ export async function POST(request) {
     const vila = await prisma.vilas.findUnique({
       where: { id: vilaId },
     });
+
+    if (!vila) {
+      return NextResponse.json(
+        {
+          message: "Vila is not found.",
+        },
+        { status: 404 }
+      );
+    }
+
     const vilaImage = await prisma.vilaImages.findMany({
       where: { vila_id: vilaId },
     });
@@ -79,37 +89,48 @@ export async function POST(request) {
       i++;
     } else {
       images = images
-        .replace(" ", "")
-        .replace("[", "")
-        .replace("]", "")
+        .replaceAll(" ", "")
+        .replaceAll("[", "")
+        .replaceAll("]", "")
+        .replaceAll('"', "")
         .split(",");
+
+
       await prisma.vilaImages.deleteMany({
         where: { vila_id: vilaId },
       });
       for (let image of images) {
+        console.log('--- image: ', image);
         await prisma.vilaImages.create({
-          vila_id: vilaId,
-          slider_image: image,
+          data: {
+            vila_id: vilaId,
+            slider_image: image,
+          }
         });
       }
     }
+
     console.log('2');
+
     if (facilities === null || facilities === "" || facilities === undefined) {
       facilities = vilaFacility.map((value) => value.facility_id);
       i++;
     } else {
       facilities = facilities
-        .replace(" ", "")
-        .replace("[", "")
-        .replace("]", "")
+        .replaceAll(" ", "")
+        .replaceAll("[", "")
+        .replaceAll("]", "")
+        .replaceAll('"', "")
         .split(",");
       await prisma.vilaFacilities.deleteMany({
         where: { vila_id: vilaId },
       });
       for (let facility of facilities) {
         await prisma.vilaFacilities.create({
-          vila_id: vilaId,
-          facility_id: Number(facility),
+          data: {
+            vila_id: vilaId,
+            facility_id: Number(facility),
+          }
         });
       }
     }
