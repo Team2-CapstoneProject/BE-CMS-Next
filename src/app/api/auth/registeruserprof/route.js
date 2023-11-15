@@ -5,14 +5,14 @@ import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import { createEdgeRouter } from "next-connect";
 import fs from "fs";
-import { open } from 'node:fs/promises';
+import { open } from "node:fs/promises";
 import path from "path";
 import process from "process";
 import { authenticate } from "@google-cloud/local-auth";
 import { google } from "googleapis";
 import pkey from "../../../../../second-network-403402-9612f42f626d.json";
 import { put, del } from "@vercel/blob";
-import stream from 'stream';
+import stream from "stream";
 
 // let filename = uuidv4() + "-" + new Date().getTime();
 // const upload = multer({
@@ -148,7 +148,7 @@ async function authorize() {
 }
 
 async function uploadFile(authClient, fileName, buffer) {
-  const drive = google.drive({ version: 'v3', auth: authClient });
+  const drive = google.drive({ version: "v3", auth: authClient });
   // const fd = await open(new URL(buffer));
   const bufferStream = new stream.PassThrough();
   bufferStream.end(buffer);
@@ -157,24 +157,21 @@ async function uploadFile(authClient, fileName, buffer) {
     const file = await drive.files.create({
       resource: {
         name: fileName,
-        parents: ['1wIJaKmh1hrUOsp_fY4I9RDhhWH_OqanR']
+        parents: ["1wIJaKmh1hrUOsp_fY4I9RDhhWH_OqanR"],
       },
       media: {
-        mimeType: 'image/jpeg',
+        mimeType: "image/jpeg",
         // body: fd.createReadStream()
-        body: bufferStream
+        body: bufferStream,
       },
-      field: 'id',
+      field: "id",
     });
-    console.log('--- File Id:', file.data.id);
+    console.log("--- File Id:", file.data.id);
 
     // return "https://drive.google.com/file/d/"+file.data.id+"/view?usp=sharing"
 
     return file.data.id;
-  }
-  else
-    console.log("Please specify a file name")
-
+  } else console.log("Please specify a file name");
 }
 
 export async function POST(request) {
@@ -197,15 +194,9 @@ export async function POST(request) {
       imageUrl = jsonData.image;
       phone_number = jsonData.phone_number;
     } else if (
-      requestHeaders.get("content-type").includes("x-www-form-urlencoded")
+      requestHeaders.get("content-type").includes("x-www-form-urlencoded") ||
+      requestHeaders.get("content-type").includes("form-data")
     ) {
-      const formData = await request.formData();
-      console.log("=== form data: ", formData);
-      fullname = formData.get("fullname");
-      nickname = formData.get("nickname");
-      imageUrl = formData.get("image");
-      phone_number = formData.get("phone_number");
-    } else if (requestHeaders.get("content-type").includes("form-data")) {
       const formData = await request.formData();
       console.log("=== form data: ", formData);
       fullname = formData.get("fullname");
@@ -213,10 +204,9 @@ export async function POST(request) {
       image = formData.get("image");
       phone_number = formData.get("phone_number");
 
-      console.log('--- image:', image);
+      console.log("--- image:", image);
 
       let buffer = Buffer.from(await image.arrayBuffer());
-      // buffer = buffer.filter((value) => value !== 0);
       filename = Date.now() + image.name.replaceAll(" ", "_");
       console.log("--- filename", filename);
 
@@ -262,7 +252,7 @@ export async function POST(request) {
 
     const newUser = await prisma.users.update({
       where: { id: Number(userData.id) },
-      data: { fullname, nickname, image:imageUrl, phone_number },
+      data: { fullname, nickname, image: imageUrl, phone_number },
     });
 
     console.log("--- new user: ", newUser);
@@ -271,7 +261,7 @@ export async function POST(request) {
       return NextResponse.json(
         {
           message: "Profile updated",
-          filename
+          filename,
         },
         { status: 201 }
       );

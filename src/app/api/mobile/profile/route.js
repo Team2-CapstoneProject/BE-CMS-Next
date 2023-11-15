@@ -1,9 +1,10 @@
 import prisma from "@/lib/prisma";
 import { verifyToken } from "@/lib/authHelper";
 import { NextResponse } from "next/server";
-import { google } from "googleapis";
-import pkey from "../../../../../second-network-403402-9612f42f626d.json";
-import stream from 'stream';
+// import { google } from "googleapis";
+// import pkey from "../../../../../second-network-403402-9612f42f626d.json";
+// import stream from 'stream';
+// import fs from "fs";
 
 // const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
 
@@ -22,53 +23,54 @@ import stream from 'stream';
 //   const drive = google.drive({ version: 'v3', auth: authClient });
 
 //   if (fileName && fileId) {
-//     let dest = createWriteStream(fileName);
-//     drive.files.get(
-//       { fileId: fileId, alt: "media" },
-//       { responseType: "stream" },
-//       (err, { data }) => {
-//         if (err) {
-//           console.log(err);
-//           return;
-//         }
-//         data
-//           .on("end", () => console.log("Done."))
-//           .on("error", (err) => {
-//             console.log(err);
-//             return process.exit();
-//           })
-//           .pipe(dest);
-//       }
-//     );
+//     try {
+//       const file = await drive.files.get({
+//         fileId: fileId,
+//         alt: 'media',
+//       });
+//       console.log('--file:', file);
+//       // console.log(file.status);
+//       const b64 = Buffer.from(file.data).toString('base64');
+//       const dataUrl = `data:${file.headers['content-type']};base64,${b64}`;
+//       console.log('--- data url:', dataUrl);
+//       return dataUrl;
+//     } catch (err) {
+//       // TODO(developer) - Handle error
+//       console.log(err);
+//       throw err;
+//     }
+
+//     // let dest = fs.createWriteStream(fileName);
+//     // let progress = 0;
+
+//     // drive.files.get(
+//     //   { fileId: fileId, alt: "media" },
+//     //   { responseType: "stream" },
+//     //   (err, { data }) => {
+//     //     if (err) {
+//     //       console.log(err);
+//     //       return;
+//     //     }
+//     //     data
+//     //       .on("end", () => console.log("Done."))
+//     //       .on("error", (err) => {
+//     //         console.log(err);
+//     //         return process.exit();
+//     //       })
+//     //       .on('data', d => {
+//     //         progress += d.length;
+//     //         if (process.stdout.isTTY) {
+//     //           process.stdout.clearLine();
+//     //           process.stdout.cursorTo(0);
+//     //           process.stdout.write(`Downloaded ${progress} bytes`);
+//     //         }   
+//     //       }) 
+//     //       .pipe(dest);
+//     //   }
+//     // );
 //   }
 //   else
 //     console.log("Please specify file name/file id")
-// }
-
-// async function downloadFile(realFileId) {
-//   // Get credentials and build service
-//   // TODO (developer) - Use appropriate auth mechanism for your app
-
-//   const {GoogleAuth} = require('google-auth-library');
-//   const {google} = require('googleapis');
-
-//   const auth = new GoogleAuth({
-//     scopes: 'https://www.googleapis.com/auth/drive',
-//   });
-//   const service = google.drive({version: 'v3', auth});
-
-//   fileId = realFileId;
-//   try {
-//     const file = await service.files.get({
-//       fileId: fileId,
-//       alt: 'media',
-//     });
-//     console.log(file.status);
-//     return file.status;
-//   } catch (err) {
-//     // TODO(developer) - Handle error
-//     throw err;
-//   }
 // }
 
 export async function GET(request) {
@@ -83,17 +85,26 @@ export async function GET(request) {
     });
     profile = JSON.parse(JSON.stringify(profile));
 
-    const profileWithoutPassword = Object.fromEntries(
-      Object.entries(profile).filter(([key]) => !["password"].includes(key))
-    );
+    // const profileWithoutPassword = Object.fromEntries(
+    //   Object.entries(profile).filter(([key]) => !["password"].includes(key))
+    // );
 
-    // imageUrl = await uploadFile(await authorize(), filename, buffer);
+    // console.log('--- profile:', profileWithoutPassword);
 
+    // imageUrl = await downloadFile(await authorize(), 'public/images/profilepict.png', profile.image);
+      
+    console.log('tes');
+    
     return NextResponse.json(
       {
-        message: "My profile",
+        nickname: profile.nickname,
+        fullname: profile.fullname,
+        email: profile.email,
+        image: 'https://drive.google.com/uc?export=view&id='+profile.image,
+        // message: "My profile",
         // profile,
-        profileWithoutPassword,
+        // profileWithoutPassword,
+        // imageUrl
       },
       { status: 200 }
     );
