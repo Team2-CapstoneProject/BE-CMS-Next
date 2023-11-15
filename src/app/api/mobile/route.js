@@ -7,8 +7,7 @@ export async function GET(request) {
   const requestHeaders = new Headers(request.headers);
   const bearerHeader = requestHeaders.get("authorization");
   const oldUserData = verifyToken(bearerHeader);
-
-  console.log('1');
+  // console.log('1');
 
   try {
     const userData = await prisma.users.findUnique({
@@ -16,8 +15,7 @@ export async function GET(request) {
         id: Number(oldUserData.id)
       }
     });
-
-    console.log('2');
+    // console.log('2');
 
     let vilas = await prisma.vilas.findMany({
       select: {
@@ -58,12 +56,10 @@ export async function GET(request) {
         },
       },
     });
-
-    console.log('3');
+    // console.log('3');
 
     vilas = JSON.parse(JSON.stringify(vilas));
-
-    console.log('4');
+    // console.log('4');
 
     for (let vila of vilas) {
       let skors = vila.Transactions.filter((value) => {
@@ -73,41 +69,36 @@ export async function GET(request) {
           return false;
         }
       });
-
-      console.log('5');
+      // console.log('5 vilaid:', vila.id);
 
       if (vila.VilaImages.length !== 0) {
         vila.VilaImages = vila.VilaImages[0];
       }
-
-      console.log('5.1');
+      // console.log('5.1');
 
       vila.jumlahBookmark = vila.Bookmarks.length;
       vila.jumlahTransaction = vila.Transactions.length;
       vila.nReview = skors.length;
+      // console.log('5.2');
+
       if (vila.nReview === 1) {
+        // console.log('5.2.1');
         vila.score = skors[0].Reviews[0].score;
       } else if (vila.nReview === 0) {
+        // console.log('5.2.2');
         vila.score = null;
       } else {
-        vila.score =
-          Math.round(
-            (skors.reduce(
-              (total, num) => total.Reviews[0].score + num.Reviews[0].score
-            ) *
-              10) /
-              skors.length
-          ) / 10;
+        // console.log('5.2.3');
+        vila.score = Math.round(skors.map((value) => value.Reviews[0].score).reduce((total,num) => total+num)*10 / skors.length)/10;
       }
+      // console.log('5.3');
     }
-
-    console.log('6');
+    // console.log('6');
 
     let recommendVilas = JSON.parse(JSON.stringify(vilas));
     let popularVilas = JSON.parse(JSON.stringify(vilas));
     let ratingVilas = JSON.parse(JSON.stringify(vilas));
-
-    console.log('7');
+    // console.log('7');
 
     return NextResponse.json(
       {
