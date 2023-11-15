@@ -76,7 +76,12 @@ export async function GET(request) {
 
       console.log('5');
 
-      vila.VilaImages = vila.VilaImages[0];
+      if (vila.VilaImages.length !== 0) {
+        vila.VilaImages = vila.VilaImages[0];
+      }
+
+      console.log('5.1');
+
       vila.jumlahBookmark = vila.Bookmarks.length;
       vila.jumlahTransaction = vila.Transactions.length;
       vila.nReview = skors.length;
