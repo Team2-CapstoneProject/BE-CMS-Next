@@ -8,12 +8,16 @@ export async function GET(request) {
   const bearerHeader = requestHeaders.get("authorization");
   const oldUserData = verifyToken(bearerHeader);
 
+  console.log('1');
+
   try {
     const userData = await prisma.users.findUnique({
       where: {
         id: Number(oldUserData.id)
       }
     });
+
+    console.log('2');
 
     let vilas = await prisma.vilas.findMany({
       select: {
@@ -54,7 +58,12 @@ export async function GET(request) {
         },
       },
     });
+
+    console.log('3');
+
     vilas = JSON.parse(JSON.stringify(vilas));
+
+    console.log('4');
 
     for (let vila of vilas) {
       let skors = vila.Transactions.filter((value) => {
@@ -64,6 +73,9 @@ export async function GET(request) {
           return false;
         }
       });
+
+      console.log('5');
+
       vila.VilaImages = vila.VilaImages[0];
       vila.nBookmark = vila.Bookmarks.length;
       vila.nTransaction = vila.Transactions.length;
@@ -84,9 +96,13 @@ export async function GET(request) {
       }
     }
 
+    console.log('6');
+
     let recommendVilas = JSON.parse(JSON.stringify(vilas));
     let popularVilas = JSON.parse(JSON.stringify(vilas));
     let ratingVilas = JSON.parse(JSON.stringify(vilas));
+
+    console.log('7');
 
     return NextResponse.json(
       {
