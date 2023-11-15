@@ -77,8 +77,8 @@ export async function GET(request) {
       console.log('5');
 
       vila.VilaImages = vila.VilaImages[0];
-      vila.nBookmark = vila.Bookmarks.length;
-      vila.nTransaction = vila.Transactions.length;
+      vila.jumlahBookmark = vila.Bookmarks.length;
+      vila.jumlahTransaction = vila.Transactions.length;
       vila.nReview = skors.length;
       if (vila.nReview === 1) {
         vila.score = skors[0].Reviews[0].score;
@@ -114,16 +114,16 @@ export async function GET(request) {
         ),
         recommendVilas: recommendVilas.sort(
           (a, b) =>
-            a.nTransaction +
-            a.nBookmark +
+            a.jumlahTransaction +
+            a.jumlahBookmark +
             a.score -
-            (b.nTransaction + b.nBookmark + b.score)
+            (b.jumlahTransaction + b.jumlahBookmark + b.score)
         ),
         popularVilas: popularVilas.sort(
-          (a, b) => a.nTransaction + a.score - (b.nTransaction + b.score)
+          (a, b) => a.jumlahTransaction + a.score - (b.jumlahTransaction + b.score)
         ),
         ratingVilas: ratingVilas.sort(
-          (a, b) => a.nReview + a.score - (b.nReview + b.score)
+          (a, b) => a.jumlahReview + a.score - (b.jumlahReview + b.score)
         ),
       },
       { status: 200 }
