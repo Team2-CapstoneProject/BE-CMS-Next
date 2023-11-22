@@ -101,7 +101,6 @@ export async function GET(request) {
         fullname: profile.fullname,
         email: profile.email,
         image: 'https://drive.google.com/uc?export=view&id='+profile.image,
-        number: profile.phone_number,
         // message: "My profile",
         // profile,
         // profileWithoutPassword,
