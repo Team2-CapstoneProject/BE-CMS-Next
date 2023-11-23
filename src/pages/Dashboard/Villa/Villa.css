@@ -1,0 +1,230 @@
+/* Villa.css */
+
+.villa-page-container {
+  text-align: start;
+  padding: 2rem;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right, #000 60%, #f0f0f0 200%);
+  color: #fff;
+  padding: 2rem;
+  text-align: center;
+  height: 300px;
+}
+
+.header-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.header-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.add-villa-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.add-villa-button:hover {
+  background-color: #fff;
+  color: #007bff;
+}
+
+.form-villa {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.form-textarea {
+  resize: vertical;
+}
+
+.form-submit {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 1.5rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* 
+.villa-table {
+  width: 100%;
+  margin-top: 2rem;
+  border-collapse: collapse;
+}
+
+.villa-table th,
+.villa-table td {
+  border: 1px solid #ddd;
+  padding: 1rem;
+} */
+/* 
+.edit-button,
+.delete-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem; 
+}
+
+.delete-button {
+  background-color: #dc3545;
+} */
+
+.villa-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.villa-card {
+  width: 470px;
+  margin: 10px;
+  /* border: 1px solid #ddd; */
+  border-radius: 12px;
+  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(250, 250, 250);
+  transition: transform 0.3s ease;
+}
+
+.villa-top {
+  display: flex;
+  justify-content: space-between;
+  align-items:flex-start;
+  padding: 12px;
+}
+
+.villa-top .villa-name {
+  margin: 0;
+  font-size: 24px;
+}
+
+.villa-top .delete-button {
+  background-color: transparent;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.delete-button{
+  padding-left: 12px;
+}
+
+.villa-location {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.villa-location .location-icon {
+  margin-right: 8px;
+}
+
+.villa-description {
+  padding:0 12px;
+  margin: 8px 0;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.villa-price {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.location-icon {
+  color: #ccc;
+  font-size: 1.4rem;
+}
+
+
+.villa-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+  padding: 0 12px;
+  border-radius: 20px;
+}
+
+.villa-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+
+.villa-bottom .villa-price {
+  margin: 0;
+}
+
+.edit-button {
+  width: 140px;
+  height: 50px;
+  background-color: #fff;
+  color: #007bff;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+}

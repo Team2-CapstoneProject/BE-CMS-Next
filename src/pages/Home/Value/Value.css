@@ -1,0 +1,74 @@
+.v-wrapper{
+  position: relative;
+  background: #fff;
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.image-container img{
+  width: 32rem;
+  height: auto;
+  border-radius: 10px ;
+}
+
+.v-container>div {
+  flex: 1;
+}
+
+.v-right {
+  gap: 0.5rem;
+  margin-left: 4rem;
+}
+
+.v-right h3 span{
+  color: var(--secondary);
+}
+
+.v-right h3{
+  font-weight: 400;
+}
+
+.v-right h1{
+  font-size: 2.8rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.accordion {
+  margin-top: 2rem;
+  border: none;
+}
+
+.accordionItem {
+  background: white;
+  border: 0.8px solid rgba(128, 128, 128, 0.143);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.accordionItem.expanded{
+  border-radius: 6px;
+}
+
+.accordionButton{
+  background: white;
+  padding: 1rem;
+  width: 100%;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.icon{
+  padding: 10px;
+  background: #FFF;
+  border-radius: 5px;
+}
+
+.icon svg{
+  fill: var(--secondary);
+}
+
+.accordionButton .primaryText{
+  font-size: 1.1rem;
+}

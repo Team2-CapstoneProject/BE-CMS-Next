@@ -1,27 +1,23 @@
 "use client";
-import useSWR from "swr";
-import Product from "@/components/Product";
-import axios from 'axios';
+import Header from "../pages/Home/Header/Header";
+import Hero from "../pages/Home/Hero/Hero";
+import Intro from "../pages/Home/Intro/Intro";
+import Property from "../pages/Home/Property/Property";
+import Value from "../pages/Home/Value/Value";
+import About from "../pages/Home/About/About";
+import Footer from "../pages/Home/Footer/Footer";
 
-const fetcher = url => axios.get(url).then((res) => res.data);
 
 export default function Home() {
-  const { data, error } = useSWR('/api/product', fetcher);
-
-  if (error) return <main>Failed to load</main>
-  if (!data) return <main>Loading...</main>
-
   return (
-    <main className="p-10 mx-auto max-w-4xl">
-      <h1 className="text-6xl font-bold mb-4 text-center">Next.js Starter</h1>
-      <p className="mb-20 text-xl text-center">
-        🔥 Shop from the hottest items in the world 🔥
-      </p>
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 justify-items-center  gap-4">
-        {data.products.map((product) => (
-          <Product product={product} key={product.id} />
-        ))}
-      </div>
-    </main>
+    <div className="App">
+      <Header />
+      <Hero />
+      <Intro />
+      <Property />
+      <Value />
+      <About />
+      <Footer />
+    </div>
   );
 }

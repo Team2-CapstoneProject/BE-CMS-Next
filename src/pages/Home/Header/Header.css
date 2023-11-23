@@ -1,0 +1,28 @@
+.h-wrapper{
+  /* display: flex; */
+  position: fixed;
+  display: block;
+  width: 100%;
+  z-index: 2;
+}
+
+.h-container{
+  justify-content: space-between;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  z-index: 1;
+  background: transparent;
+}
+
+.h-container img{
+  width: 75px;
+}
+
+.h-menu{
+  gap: 2rem;
+  color: var(--black);
+}
+
+.h-menu>*:hover{
+  cursor: pointer;
+}
