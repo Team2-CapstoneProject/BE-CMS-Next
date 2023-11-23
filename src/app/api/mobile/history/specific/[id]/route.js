@@ -43,37 +43,64 @@ export async function GET(request, { params }) {
                 createdAt: true,
               },
             },
-          }
+          },
         },
         TransactionStatuses: {
           select: {
             status_id: true,
-          }
-        }
-      }
+          },
+        },
+        Reviews: {
+          select: {
+            user_id: true,
+            score: true,
+            description: true,
+          },
+        },
+      },
     });
 
     if (!transaction) {
-      return NextResponse.json({message: "Vila is not found."}, { status: 404 })
+      return NextResponse.json(
+        { message: "Vila is not found." },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({
-      tgl_checkin: transaction.tgl_checkin,
-      tgl_checkout: transaction.tgl_checkout,
-      full_name: transaction.full_name,
-      n_guest: transaction.n_guest,
-      total_price: transaction.price,
-      taxes: transaction.taxes,
-      vila_name: transaction.Vilas.name,
-      vila_price: transaction.Vilas.price,
-      vila_location: transaction.Vilas.location,
-      vila_image: transaction.Vilas.VilaImages.length > 0 ? transaction.Vilas.VilaImages[0].slider_image : null,
-      is_bookmark: transaction.Vilas.Bookmarks.length > 0,
-      transaction_status: transaction.TransactionStatuses.length > 0 ? transaction.TransactionStatuses[0].status_id : 1
-    }, { status: 200 });
-
+    return NextResponse.json(
+      {
+        id,
+        tgl_checkin: transaction.tgl_checkin,
+        tgl_checkout: transaction.tgl_checkout,
+        full_name: transaction.full_name,
+        n_guest: transaction.n_guest,
+        total_price: transaction.price,
+        taxes: transaction.taxes,
+        vila_name: transaction.Vilas.name,
+        vila_price: transaction.Vilas.price,
+        vila_location: transaction.Vilas.location,
+        vila_image:
+          transaction.Vilas.VilaImages.length > 0
+            ? transaction.Vilas.VilaImages[0].slider_image
+            : null,
+        is_bookmark: transaction.Vilas.Bookmarks.length > 0,
+        transaction_status:
+          transaction.TransactionStatuses.length > 0
+            ? transaction.TransactionStatuses[0].status_id
+            : 1,
+        review_user_id:
+          transaction.Reviews.length !== 0
+            ? transaction.Reviews[0].user_id
+            : null,
+        review_score:
+          transaction.Reviews.length !== 0
+            ? transaction.Reviews[0].score
+            : null,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json(error, { status: 500 })
+    return NextResponse.json(error, { status: 500 });
   }
 }
 
@@ -90,7 +117,9 @@ export async function POST(request, { params }) {
     if (requestHeaders.get("content-type").includes("json")) {
       const jsonData = await request.json();
       transactionType = jsonData.transactionType;
-    } else if (requestHeaders.get("content-type").includes("x-www-form-urlencoded")) {
+    } else if (
+      requestHeaders.get("content-type").includes("x-www-form-urlencoded")
+    ) {
       const formData = await request.formData();
       transactionType = formData.get("transactionType");
     }
@@ -101,29 +130,51 @@ export async function POST(request, { params }) {
         status_id: true,
         Transactions: {
           select: {
-            user_id: true
-          }
-        }
-      }
+            user_id: true,
+          },
+        },
+      },
     });
 
     if (!transaction) {
-      return NextResponse.json({ message: "Transaction status is not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Transaction status is not found" },
+        { status: 404 }
+      );
     }
     if (userData.id !== transaction.Transactions.user_id) {
-      return NextResponse.json({ message: "Cannot edit other's status" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Cannot edit other's status" },
+        { status: 400 }
+      );
     }
     if (transaction.status_id === 1) {
       await prisma.transactionStatuses.updateMany({
         where: { transaction_id: id },
-        data: { status_id: transactionType === "pay" ? 2 : 3 }
+        data: { status_id: transactionType === "pay" ? 2 : 3 },
       });
 
-      return NextResponse.json({ message: "Transaction status changed to "+transactionType }, { status: 201 });
-    } else {
-      return NextResponse.json({ message: "Cannot change status" }, { status: 401 });
-    }
+      if (transactionType === "pay") {
+        await prisma.reviews.create({
+          data: {
+            transaction_id: id,
+            user_id: Number(transaction.Transactions.user_id),
+            score: null,
+            description: null,
+          },
+        });
+      }
 
+      return NextResponse.json(
+        { message: "Transaction status changed to " + transactionType },
+        { status: 201 }
+      );
+    } else {
+      return NextResponse.json(
+        { message: "Cannot change status" },
+        { status: 401 }
+      );
+    }
   } catch (error) {
     return NextResponse.json(error, { status: 500 });
   }

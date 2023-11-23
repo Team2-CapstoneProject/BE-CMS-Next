@@ -3,17 +3,15 @@ import { verifyToken } from "@/lib/authHelper";
 import { NextResponse } from "next/server";
 import midtransClient from "midtrans-client";
 
-export async function GET(request) {
-  console.log("=== payment gateway GET");
+export async function POST(request) {
+  console.log("=== payment gateway POST");
   const requestHeaders = new Headers(request.headers);
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
-  const vilaId = request.nextUrl.searchParams.get('vila_id');
-  const nNight = request.nextUrl.searchParams.get('n_night');
   const secretKey = process.env.SERVER_ID;
   const secretClientKey = process.env.CLIENT_ID;
 
-  console.log('1');
+  // console.log('1');
 
   let snap = new midtransClient.Snap({
     isProduction: false,
@@ -21,9 +19,27 @@ export async function GET(request) {
     clientKey: secretClientKey
   });
 
-  console.log('2');
+  // console.log('2');
 
   try {
+    let vilaId, nNight, tglCheckin, tglCheckout;
+
+    if ( requestHeaders.get('content-type').includes('json') ) {
+      const jsonData = await request.json();
+      console.log('=== json data: ', jsonData);
+      vilaId = jsonData.vilaId;
+      nNight = jsonData.nNight;
+      tglCheckin = jsonData.tglCheckin;
+      tglCheckout = jsonData.tglCheckout;
+    } else if ( requestHeaders.get('content-type').includes('x-www-form-urlencoded') ) {
+      const formData = await request.formData();
+      console.log('=== form data: ', formData);
+      vilaId = formData.get("vilaId");
+      nNight = formData.get("nNight");
+      tglCheckin = formData.get("tglCheckin");
+      tglCheckout = formData.get("tglCheckout");
+    }
+
     const user = await prisma.users.findUnique({
       where: { id: Number(userData.id) },
     });
@@ -32,7 +48,7 @@ export async function GET(request) {
       where: { id: Number(vilaId) },
     });
 
-    console.log('3');
+    // console.log('3');
 
     if (! vila) {
       return NextResponse.json({
@@ -42,12 +58,12 @@ export async function GET(request) {
       });
     }
 
-    console.log('4');
+    // console.log('4');
 
     const price = vila.price;
     const tax = (price*nNight) * 0.05;
 
-    console.log('5');
+    // console.log('5');
 
     let parameter = {
       "transaction_details": {
@@ -76,16 +92,47 @@ export async function GET(request) {
       },
     };
 
-    console.log('6');
+    // console.log('6');
 
     const transaction = await snap.createTransaction(parameter);
+    
+    // console.log('7');
 
-    console.log('7');
+    console.log('data checkin new', new Date(tglCheckin));
+    console.log('data checkin parse', Date.parse(tglCheckin));
+    console.log('user: ', user);
+    console.log('tax: ', tax);
+
+    const newTransaction = await prisma.transactions.create({
+      data: {
+        user_id: Number(user.id),
+        vila_id: Number(vilaId),
+        n_guest: 3,
+        price: Number(price),
+        taxes: Number(tax),
+        tgl_checkin: new Date(tglCheckin),
+        tgl_checkout: new Date(tglCheckout),
+        full_name: user.fullname,
+        phone_number: user.phone_number,
+      },
+    });
+
+    // console.log('8');
+
+    await prisma.transactionStatuses.create({
+      data: {
+        transaction_id: newTransaction.id,
+        status_id: 1,
+      },
+    });
+
+    // console.log('9');
 
     return NextResponse.json(
       {
         message: "retrieve transaction token",
-        transaction,
+        transaction_token: transaction.token,
+        transaction_url: transaction.redirect_url,
       },
       { status: 200 }
     );
