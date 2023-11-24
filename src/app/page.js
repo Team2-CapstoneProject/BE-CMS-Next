@@ -8,9 +8,13 @@ import About from "../pages/Home/About/About";
 import Footer from "../pages/Home/Footer/Footer";
 
 
+import { Provider } from "react-redux";
+import Store from "./store";
+
 export default function Home() {
   return (
-    <div className="App">
+    <Provider store={Store}>
+      <div className="App">
       <Header />
       <Hero />
       <Intro />
@@ -19,5 +23,7 @@ export default function Home() {
       <About />
       <Footer />
     </div>
+      </Provider>
+    
   );
 }
