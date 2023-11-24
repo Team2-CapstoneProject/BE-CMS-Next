@@ -11,8 +11,8 @@ const Dashboard = () => {
   const dashboardData = useSelector((state) => state.dashboard.data);
   const loading = useSelector((state) => state.dashboard.loading);
 
-  console.log('state dashboard:', dashboardData);
-  console.log('state loading:', loading);
+  // console.log('state dashboard:', dashboardData);
+  // console.log('state loading:', loading);
 
   useEffect(() => {
     dispatch(fetchDashboardData());

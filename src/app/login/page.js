@@ -61,7 +61,7 @@ const LoginPage = () => {
             />
           </div>
         </div>
-        <div className="login">
+        <div className="login px-10">
           <div className="container">
             <div className="login-title">
               <h1>Login to Admin Page</h1>

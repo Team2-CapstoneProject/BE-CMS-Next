@@ -30,7 +30,7 @@ export const dashboardSlice = createSlice({
   initialState,
   reducers: {
     fetchRequest(state, action) {
-      console.log("fetch loading.");
+      // console.log("fetch loading.");
       return {
         ...state,
         loading: true,
@@ -38,7 +38,7 @@ export const dashboardSlice = createSlice({
       };
     },
     fetchDataDashboardSuccess(state, action) {
-      console.log("data fetch dashboard success:", action.payload);
+      // console.log("data fetch dashboard success:", action.payload);
       return {
         ...state,
         loading: false,
@@ -47,7 +47,7 @@ export const dashboardSlice = createSlice({
       };
     },
     fetchDataVilaSuccess(state, action) {
-      console.log("data fetch vila success:", action.payload);
+      // console.log("data fetch vila success:", action.payload);
       return {
         ...state,
         loading: false,
@@ -56,7 +56,7 @@ export const dashboardSlice = createSlice({
       };
     },
     addDataVilaSuccess(state, action) {
-      console.log("data add vila success:", action.payload);
+      // console.log("data add vila success:", action.payload);
       return {
         ...state,
         villas: [...state.villas, action.payload],
@@ -65,7 +65,7 @@ export const dashboardSlice = createSlice({
       };
     },
     editDataVilaSuccess(state, action) {
-      console.log("data edit vila success:", action.payload);
+      // console.log("data edit vila success:", action.payload);
       const updatedVilla = action.payload;
       const updatedVillas = state.villas.map((villa) =>
         villa.id === updatedVilla.id ? updatedVilla : villa
@@ -79,7 +79,7 @@ export const dashboardSlice = createSlice({
       };
     },
     deleteDataVilaSuccess(state, action) {
-      console.log("data delete vila success.");
+      // console.log("data delete vila success.");
       return {
         ...state,
         deleting: false,
@@ -88,7 +88,7 @@ export const dashboardSlice = createSlice({
       };
     },
     fetchFailure(state, action) {
-      console.log("data fetch dashboard failed:", action.payload);
+      // console.log("data fetch dashboard failed:", action.payload);
       return {
         ...state,
         loading: false,

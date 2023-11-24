@@ -233,7 +233,9 @@ export const addVillaAction = (villaData) => async (dispatch) => {
 
     const { data } = response;
 
-    if (data && data.message === "successfully added a new vila.") {
+    // console.log('--- data:', data);
+
+    if (data && data.message === "Create a vila is success.") {
       Swal.fire({
         icon: "success",
         title: "Villa Added",
@@ -242,8 +244,8 @@ export const addVillaAction = (villaData) => async (dispatch) => {
         window.location.reload();
       });
 
-      const updatedVillas = await dispatch(fetchVillas());
-      dispatch(addDataVilaSuccess(updatedVillas));
+      // const updatedVillas = await dispatch(fetchVillas());
+      // dispatch(addDataVilaSuccess(updatedVillas));
     } else {
       throw new Error("Invalid response format. Vila addition failed.");
     }

@@ -20,7 +20,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     loginRequestRed(state, action) {
-      console.log("login loading.");
+      // console.log("login loading.");
       return {
         // ...state,
         user: null,
@@ -30,7 +30,7 @@ export const authSlice = createSlice({
       };
     },
     loginSuccessRed(state, action) {
-      console.log("data fetch login success:", action.payload);
+      // console.log("data fetch login success:", action.payload);
       return {
         // ...state,
         user: action.payload.user,
@@ -40,7 +40,7 @@ export const authSlice = createSlice({
       };
     },
     loginFailureRed(state, action) {
-      console.log("data fetch login failed:", action.payload);
+      // console.log("data fetch login failed:", action.payload);
       return {
         // ...state,
         user: null,
@@ -50,7 +50,7 @@ export const authSlice = createSlice({
       };
     },
     logoutRed(state, action) {
-      console.log("data fetch logout.");
+      // console.log("data fetch logout.");
       return {
         // ...state,
         user: null,
