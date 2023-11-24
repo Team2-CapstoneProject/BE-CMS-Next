@@ -22,7 +22,7 @@ export const authSlice = createSlice({
     loginRequestRed(state, action) {
       console.log("login loading.");
       return {
-        ...state,
+        // ...state,
         user: null,
         token: null,
         error: null,
@@ -32,7 +32,7 @@ export const authSlice = createSlice({
     loginSuccessRed(state, action) {
       console.log("data fetch login success:", action.payload);
       return {
-        ...state,
+        // ...state,
         user: action.payload.user,
         token: action.payload.token,
         error: null,
@@ -42,8 +42,9 @@ export const authSlice = createSlice({
     loginFailureRed(state, action) {
       console.log("data fetch login failed:", action.payload);
       return {
-        ...state,
+        // ...state,
         user: null,
+        token: null,
         error: action.payload,
         isLoggedIn: false,
       };
@@ -51,7 +52,7 @@ export const authSlice = createSlice({
     logoutRed(state, action) {
       console.log("data fetch logout.");
       return {
-        ...state,
+        // ...state,
         user: null,
         token: null,
         error: null,
