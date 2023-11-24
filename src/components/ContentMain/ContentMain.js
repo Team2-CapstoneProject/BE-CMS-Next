@@ -2,9 +2,9 @@
 
 import "./ContentMain.css";
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "../../Pages/Dashboard/Dashboard/Dashboard";
-import GuestPage from "../../Pages/Dashboard/Guest/Guest";
-import VillaPage from "../../Pages/Dashboard/Villa/Villa";
+import Dashboard from "../../pages/Dashboard/Dashboard/Dashboard";
+import GuestPage from "../../pages/Dashboard/Guest/Guest";
+import VillaPage from "../../pages/Dashboard/Villa/Villa";
 
 const ContentMain = () => {
   return (
