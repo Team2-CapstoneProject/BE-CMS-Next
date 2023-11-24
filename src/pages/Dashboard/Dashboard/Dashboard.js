@@ -8,8 +8,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const dashboardData = useSelector((state) => state.dashboard.data);
-  const loading = useSelector((state) => state.dashboard.loading);
+  // const dashboardData = useSelector((state) => state.dashboard.data);
+  // const loading = useSelector((state) => state.dashboard.loading);
 
   useEffect(() => {
     dispatch(fetchDashboardData());
