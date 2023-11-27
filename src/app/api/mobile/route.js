@@ -52,6 +52,7 @@ export async function GET(request) {
         Bookmarks: {
           select: {
             id: true,
+            user_id: true,
           },
         },
       },
@@ -75,6 +76,15 @@ export async function GET(request) {
         vila.VilaImages = vila.VilaImages[0];
       }
       // console.log('5.1');
+
+      vila.isBookmarked = false;
+
+      for (let bookmark of vila.Bookmarks) {
+        if (bookmark.user_id == userData.id) {
+          vila.isBookmarked = true;
+          break;
+        }
+      }
 
       vila.jumlahBookmark = vila.Bookmarks.length;
       vila.jumlahTransaction = vila.Transactions.length;
