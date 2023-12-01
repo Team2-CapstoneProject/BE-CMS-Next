@@ -120,16 +120,16 @@ export async function GET(request) {
         ),
         recommendVilas: recommendVilas.sort(
           (a, b) =>
-            a.jumlahTransaction +
-            a.jumlahBookmark +
-            a.score -
-            (b.jumlahTransaction + b.jumlahBookmark + b.score)
+            b.jumlahTransaction +
+            b.jumlahBookmark +
+            b.score -
+            (a.jumlahTransaction + a.jumlahBookmark + a.score)
         ),
         popularVilas: popularVilas.sort(
-          (a, b) => a.jumlahTransaction + a.score - (b.jumlahTransaction + b.score)
+          (a, b) => b.jumlahTransaction + b.score - (a.jumlahTransaction + a.score)
         ),
         ratingVilas: ratingVilas.sort(
-          (a, b) => a.jumlahReview + a.score - (b.jumlahReview + b.score)
+          (a, b) => b.jumlahReview + b.score - (a.jumlahReview + a.score)
         ),
       },
       { status: 200 }

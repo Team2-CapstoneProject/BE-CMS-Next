@@ -74,7 +74,7 @@ export async function GET(request, { params }) {
         tgl_checkout: transaction.tgl_checkout,
         full_name: transaction.full_name,
         n_guest: transaction.n_guest,
-        total_price: transaction.price,
+        total_price: transaction.price + transaction.taxes,
         taxes: transaction.taxes,
         vila_name: transaction.Vilas.name,
         vila_price: transaction.Vilas.price,

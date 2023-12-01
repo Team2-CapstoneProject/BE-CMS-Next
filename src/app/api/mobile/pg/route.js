@@ -60,8 +60,8 @@ export async function POST(request) {
 
     // console.log('4');
 
-    const price = vila.price;
-    const tax = (price*nNight) * 0.05;
+    const price = vila.price*nNight;
+    const tax = price * 0.05;
 
     // console.log('5');
 
