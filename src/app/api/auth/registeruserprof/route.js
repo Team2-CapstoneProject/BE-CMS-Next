@@ -176,7 +176,7 @@ async function uploadFile(authClient, fileName, buffer) {
 
 export async function POST(request) {
   console.log("--- Edit my profile.");
-  console.log("=== request: ", request);
+  // console.log("=== request: ", request);
   const requestHeaders = new Headers(request.headers);
   const bearerHeader = requestHeaders.get("authorization");
   const userData = verifyToken(bearerHeader);
@@ -210,8 +210,6 @@ export async function POST(request) {
 
       console.log("--- image:", image);
 
-      let imageUrl;
-
       if (image === null || image === "") {
         console.log("image kosong");
         imageUrl = user.image;
@@ -223,6 +221,7 @@ export async function POST(request) {
 
         imageUrl = await uploadFile(await authorize(), filename, buffer);
       }
+      console.log('--- image url:', imageUrl);
     }
     // https://blog.devops.dev/upload-files-to-google-drive-with-nodejs-d0c24d4b4dc0
     // https://developers.google.com/drive/api/quickstart/nodejs
