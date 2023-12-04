@@ -186,6 +186,10 @@ export async function POST(request) {
   let fullname, nickname, image, phone_number, imageUrl, filename;
 
   try {
+    const user = await prisma.users.findMany({
+      where: { id: Number(userData.id) },
+    });
+
     if (requestHeaders.get("content-type").includes("json")) {
       const jsonData = await request.json();
       console.log("=== json data: ", jsonData);
@@ -208,10 +212,10 @@ export async function POST(request) {
 
       let imageUrl;
 
-      if (image == "") {
+      if (image === null || image === "") {
         console.log("image kosong");
-        imageUrl = "10-Q5g-IZdM-sofWcSizh_cKC4WM_rO96";
-        filename = 'default picture';
+        imageUrl = user.image;
+        filename = 'picture is not edited';
       } else {
         let buffer = Buffer.from(await image.arrayBuffer());
         filename = Date.now() + image.name.replaceAll(" ", "_");
@@ -225,9 +229,6 @@ export async function POST(request) {
 
     // console.log('--- request file: ', request.file);
 
-    const user = await prisma.users.findMany({
-      where: { id: Number(userData.id) },
-    });
 
     if (fullname === null || fullname === "") {
       fullname = user.fullname;
@@ -235,9 +236,7 @@ export async function POST(request) {
     if (nickname === null || nickname === "") {
       nickname = user.nickname;
     }
-    // if (image === null || image === "") {
-    //   image = user.image;
-    // }
+    
     if (phone_number === null || phone_number === "") {
       phone_number = user.phone_number;
     }

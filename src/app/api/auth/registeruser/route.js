@@ -37,7 +37,7 @@ export async function POST(request) {
       );
     }
     let image =
-      "https://cdn.icon-icons.com/icons2/1378/PNG/256/avatardefault_92824.png";
+      "10-Q5g-IZdM-sofWcSizh_cKC4WM_rO96";
     let fullname = email.split("@")[0];
     let nickname = fullname;
     let phone_number = "0";
