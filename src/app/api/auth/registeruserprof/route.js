@@ -206,27 +206,19 @@ export async function POST(request) {
 
       console.log("--- image:", image);
 
-      let buffer = Buffer.from(await image.arrayBuffer());
-      filename = Date.now() + image.name.replaceAll(" ", "_");
-      console.log("--- filename", filename);
+      let imageUrl;
 
-      // let newBuffer = Buffer.from(buffer.filter((value) => value != 0x00));
+      if (image == "") {
+        console.log("image kosong");
+        imageUrl = "10-Q5g-IZdM-sofWcSizh_cKC4WM_rO96";
+        filename = 'default picture';
+      } else {
+        let buffer = Buffer.from(await image.arrayBuffer());
+        filename = Date.now() + image.name.replaceAll(" ", "_");
+        console.log("--- filename", filename);
 
-      // console.log('--- buffer: ', buffer);
-      // console.log('--- buffer: ', newBuffer);
-
-      // const blob = await put(filename, await image.arrayBuffer(), {access: 'public'});
-
-      // console.log('-- blob:', blob);
-
-      imageUrl = await uploadFile(await authorize(), filename, buffer);
-
-      // authorize().then(uploadFile).catch(console.error);
-
-      // await fs.writeFile(
-      //   path.join(process.cwd(), "public/uploads/" + filename),
-      //   buffer
-      // );
+        imageUrl = await uploadFile(await authorize(), filename, buffer);
+      }
     }
     // https://blog.devops.dev/upload-files-to-google-drive-with-nodejs-d0c24d4b4dc0
     // https://developers.google.com/drive/api/quickstart/nodejs

@@ -68,13 +68,13 @@ export async function POST(request) {
     let parameter = {
       "transaction_details": {
         "order_id": "order-id-node-"+Math.round((new Date()).getTime() / 1000),
-        "gross_amount": price*nNight + tax
+        "gross_amount": price + tax
       }, "credit_card":{
         "secure" : true
       }, "item_details": [
         {
           "id": "Vila-"+vilaId,
-          "price": price,
+          "price": price/nNight,
           "quantity": nNight,
           "name": vila.name
         },
