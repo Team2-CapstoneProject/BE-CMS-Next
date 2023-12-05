@@ -72,7 +72,7 @@ const Dashboard = () => {
               <td>
                 <img
                   src={
-                    user.image ||
+                    "https://drive.google.com/uc?export=view&id=" + user.image ||
                     "https://cdn.icon-icons.com/icons2/1378/PNG/256/avatardefault_92824.png"
                   }
                   alt="User"
